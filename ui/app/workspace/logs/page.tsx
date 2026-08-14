@@ -425,7 +425,7 @@ export default function LogsPage() {
 				parent_request_id: parentRequestId,
 			});
 		},
-		[filters, setFilters],
+		[filters, setFilters, setUrlState],
 	);
 
 	// --- Grouped view: chain expansion state -------------------------------
