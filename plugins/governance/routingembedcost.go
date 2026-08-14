@@ -32,7 +32,8 @@ func (p *GovernancePlugin) AttributeRoutingEmbeddingCost(provider schemas.ModelP
 	if ctx == nil {
 		ctx = context.Background()
 	}
-	if err := p.store.UpdateProviderAndModelBudgetUsageInMemory(ctx, model, provider, cost); err != nil && p.logger != nil {
+	budgets, _ := p.store.ProviderAndModelLimits(ctx, nil, provider, model)
+	if err := p.store.ChargeBudgets(ctx, budgets, cost); err != nil && p.logger != nil {
 		p.logger.Error("failed to attribute warmup embedding cost to provider/model budgets: %v", err)
 	}
 }
