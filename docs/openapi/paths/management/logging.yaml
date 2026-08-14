@@ -47,6 +47,16 @@ logs:
         description: Comma-separated list of routing engines to filter by (routing-rule, governance, or loadbalancing)
         schema:
           type: string
+      - name: complexity_tiers
+        in: query
+        description: Comma-separated list of routing complexity tiers to filter by (SIMPLE, MEDIUM, COMPLEX, or the legacy REASONING tier recorded on historical rows before it was merged into COMPLEX)
+        schema:
+          type: string
+      - name: complexity_mechanisms
+        in: query
+        description: Comma-separated list of complexity classification mechanisms to filter by (semantic or skipped)
+        schema:
+          type: string
       - name: start_time
         in: query
         description: Start time filter (RFC3339 format)
@@ -219,6 +229,16 @@ logs-stats:
         description: Comma-separated list of routing engines to filter by (routing-rule, governance, or loadbalancing)
         schema:
           type: string
+      - name: complexity_tiers
+        in: query
+        description: Comma-separated list of routing complexity tiers to filter by (SIMPLE, MEDIUM, COMPLEX, or the legacy REASONING tier recorded on historical rows before it was merged into COMPLEX)
+        schema:
+          type: string
+      - name: complexity_mechanisms
+        in: query
+        description: Comma-separated list of complexity classification mechanisms to filter by (semantic or skipped)
+        schema:
+          type: string
       - name: start_time
         in: query
         description: Start time filter (RFC3339 format)
@@ -380,35 +400,35 @@ logs-histogram:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/aliases"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/team_ids"
-      - $ref: "#/_histogram-parameters/customer_ids"
-      - $ref: "#/_histogram-parameters/user_ids"
-      - $ref: "#/_histogram-parameters/business_unit_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/period"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/stop_reasons"
-      - $ref: "#/_histogram-parameters/cache_hit_types"
-      - $ref: "#/_histogram-parameters/parent_request_id"
-      - $ref: "#/_histogram-parameters/metadata_key"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/aliases'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/team_ids'
+      - $ref: '#/_histogram-parameters/customer_ids'
+      - $ref: '#/_histogram-parameters/user_ids'
+      - $ref: '#/_histogram-parameters/business_unit_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/period'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/stop_reasons'
+      - $ref: '#/_histogram-parameters/cache_hit_types'
+      - $ref: '#/_histogram-parameters/parent_request_id'
+      - $ref: '#/_histogram-parameters/metadata_key'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -431,25 +451,25 @@ logs-histogram-tokens:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -472,25 +492,25 @@ logs-histogram-cost:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -513,25 +533,25 @@ logs-histogram-models:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -554,25 +574,25 @@ logs-histogram-latency:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -595,25 +615,25 @@ logs-histogram-cost-by-provider:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -636,25 +656,25 @@ logs-histogram-tokens-by-provider:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -677,25 +697,25 @@ logs-histogram-latency-by-provider:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -788,6 +808,18 @@ _histogram-parameters:
     name: routing_engine_used
     in: query
     description: Comma-separated list of routing engines to filter by
+    schema:
+      type: string
+  complexity_tiers:
+    name: complexity_tiers
+    in: query
+    description: Comma-separated list of routing complexity tiers to filter by (SIMPLE, MEDIUM, COMPLEX, or the legacy REASONING tier recorded on historical rows before it was merged into COMPLEX)
+    schema:
+      type: string
+  complexity_mechanisms:
+    name: complexity_mechanisms
+    in: query
+    description: Comma-separated list of complexity classification mechanisms to filter by (semantic or skipped)
     schema:
       type: string
   start_time:
@@ -1332,37 +1364,37 @@ logs-rankings:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/aliases"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/team_ids"
-      - $ref: "#/_histogram-parameters/customer_ids"
-      - $ref: "#/_histogram-parameters/user_ids"
-      - $ref: "#/_histogram-parameters/business_unit_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/period"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/stop_reasons"
-      - $ref: "#/_histogram-parameters/cache_hit_types"
-      - $ref: "#/_histogram-parameters/parent_request_id"
-      - $ref: "#/_histogram-parameters/metadata_key"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
-      - $ref: "#/_ranking-parameters/limit"
-      - $ref: "#/_ranking-parameters/all"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/aliases'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/team_ids'
+      - $ref: '#/_histogram-parameters/customer_ids'
+      - $ref: '#/_histogram-parameters/user_ids'
+      - $ref: '#/_histogram-parameters/business_unit_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/period'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/stop_reasons'
+      - $ref: '#/_histogram-parameters/cache_hit_types'
+      - $ref: '#/_histogram-parameters/parent_request_id'
+      - $ref: '#/_histogram-parameters/metadata_key'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
+      - $ref: '#/_ranking-parameters/limit'
+      - $ref: '#/_ranking-parameters/all'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -1397,35 +1429,35 @@ logs-dashboard:
     tags:
       - Logging
     parameters:
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/aliases"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/team_ids"
-      - $ref: "#/_histogram-parameters/customer_ids"
-      - $ref: "#/_histogram-parameters/user_ids"
-      - $ref: "#/_histogram-parameters/business_unit_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/period"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/stop_reasons"
-      - $ref: "#/_histogram-parameters/cache_hit_types"
-      - $ref: "#/_histogram-parameters/parent_request_id"
-      - $ref: "#/_histogram-parameters/metadata_key"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/aliases'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/team_ids'
+      - $ref: '#/_histogram-parameters/customer_ids'
+      - $ref: '#/_histogram-parameters/user_ids'
+      - $ref: '#/_histogram-parameters/business_unit_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/period'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/stop_reasons'
+      - $ref: '#/_histogram-parameters/cache_hit_types'
+      - $ref: '#/_histogram-parameters/parent_request_id'
+      - $ref: '#/_histogram-parameters/metadata_key'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
       - name: tool_names
         in: query
         description: Comma-separated list of MCP tool names to filter the MCP section by
@@ -1468,26 +1500,26 @@ logs-histogram-cost-by-dimension:
         required: true
         description: Grouping dimension
         schema:
-          $ref: "../../schemas/management/logging.yaml#/HistogramDimension"
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+          $ref: '../../schemas/management/logging.yaml#/HistogramDimension'
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -1517,26 +1549,26 @@ logs-histogram-tokens-by-dimension:
         required: true
         description: Grouping dimension
         schema:
-          $ref: "../../schemas/management/logging.yaml#/HistogramDimension"
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+          $ref: '../../schemas/management/logging.yaml#/HistogramDimension'
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
@@ -1566,26 +1598,26 @@ logs-histogram-latency-by-dimension:
         required: true
         description: Grouping dimension
         schema:
-          $ref: "../../schemas/management/logging.yaml#/HistogramDimension"
-      - $ref: "#/_histogram-parameters/providers"
-      - $ref: "#/_histogram-parameters/models"
-      - $ref: "#/_histogram-parameters/status"
-      - $ref: "#/_histogram-parameters/objects"
-      - $ref: "#/_histogram-parameters/selected_key_ids"
-      - $ref: "#/_histogram-parameters/virtual_key_ids"
-      - $ref: "#/_histogram-parameters/routing_rule_ids"
-      - $ref: "#/_histogram-parameters/routing_engine_used"
-      - $ref: "#/_histogram-parameters/start_time"
-      - $ref: "#/_histogram-parameters/end_time"
-      - $ref: "#/_histogram-parameters/min_latency"
-      - $ref: "#/_histogram-parameters/max_latency"
-      - $ref: "#/_histogram-parameters/min_tokens"
-      - $ref: "#/_histogram-parameters/max_tokens"
-      - $ref: "#/_histogram-parameters/min_cost"
-      - $ref: "#/_histogram-parameters/max_cost"
-      - $ref: "#/_histogram-parameters/missing_cost_only"
-      - $ref: "#/_histogram-parameters/content_search"
-      - $ref: "#/_histogram-parameters/request_id"
+          $ref: '../../schemas/management/logging.yaml#/HistogramDimension'
+      - $ref: '#/_histogram-parameters/providers'
+      - $ref: '#/_histogram-parameters/models'
+      - $ref: '#/_histogram-parameters/status'
+      - $ref: '#/_histogram-parameters/objects'
+      - $ref: '#/_histogram-parameters/selected_key_ids'
+      - $ref: '#/_histogram-parameters/virtual_key_ids'
+      - $ref: '#/_histogram-parameters/routing_rule_ids'
+      - $ref: '#/_histogram-parameters/routing_engine_used'
+      - $ref: '#/_histogram-parameters/start_time'
+      - $ref: '#/_histogram-parameters/end_time'
+      - $ref: '#/_histogram-parameters/min_latency'
+      - $ref: '#/_histogram-parameters/max_latency'
+      - $ref: '#/_histogram-parameters/min_tokens'
+      - $ref: '#/_histogram-parameters/max_tokens'
+      - $ref: '#/_histogram-parameters/min_cost'
+      - $ref: '#/_histogram-parameters/max_cost'
+      - $ref: '#/_histogram-parameters/missing_cost_only'
+      - $ref: '#/_histogram-parameters/content_search'
+      - $ref: '#/_histogram-parameters/request_id'
     security:
       - ManagementBearerAuth: []
     responses:
