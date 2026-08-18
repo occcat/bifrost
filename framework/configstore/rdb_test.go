@@ -2619,7 +2619,6 @@ func TestCreateAndGetPlugin(t *testing.T) {
 	plugin := &tables.TablePlugin{
 		Name:    "test-plugin",
 		Enabled: true,
-		Version: 1,
 	}
 
 	err := store.CreatePlugin(ctx, plugin)
@@ -2639,19 +2638,18 @@ func TestUpsertPlugin(t *testing.T) {
 	plugin := &tables.TablePlugin{
 		Name:    "upsert-plugin",
 		Enabled: true,
-		Version: 1,
 	}
 	err := store.UpsertPlugin(ctx, plugin)
 	require.NoError(t, err)
 
 	// Upsert with update
-	plugin.Version = 2
+	plugin.Enabled = false
 	err = store.UpsertPlugin(ctx, plugin)
 	require.NoError(t, err)
 
 	result, err := store.GetPlugin(ctx, "upsert-plugin")
 	require.NoError(t, err)
-	assert.Equal(t, int16(2), result.Version)
+	assert.False(t, result.Enabled)
 }
 
 // =============================================================================

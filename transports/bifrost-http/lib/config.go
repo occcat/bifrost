@@ -4,6 +4,8 @@ package lib
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -4396,6 +4398,8 @@ func loadAuthConfig(ctx context.Context, config *Config, configData *ConfigData)
 
 // loadPlugins loads and merges plugins from file
 func loadPlugins(ctx context.Context, config *Config, configData *ConfigData) {
+	// Hash of config.json recorded at each stored plugin's last sync, keyed by plugin name.
+	storedPluginHashes := make(map[string]string)
 	// First load plugins from DB
 	if config.ConfigStore != nil {
 		logger.Debug("getting plugins from store")
@@ -4419,6 +4423,7 @@ func loadPlugins(ctx context.Context, config *Config, configData *ConfigData) {
 						logger.Warn("failed to validate semantic cache config: %v", err)
 					}
 				}
+				storedPluginHashes[plugin.Name] = plugin.ConfigHash
 				config.PluginConfigs[i] = pluginConfig
 			}
 		}
@@ -4429,46 +4434,64 @@ func loadPlugins(ctx context.Context, config *Config, configData *ConfigData) {
 		if configData.isConfigJSONSourceOfTruth() && configData.sectionPresent("plugins") {
 			syncPluginsFromFile(ctx, config, configData)
 		} else {
-			mergePlugins(ctx, config, configData)
+			mergePlugins(ctx, config, configData, storedPluginHashes)
 		}
 	} else if configData.isConfigJSONSourceOfTruth() && configData.sectionPresent("plugins") {
 		syncPluginsFromFile(ctx, config, configData)
 	}
 }
 
-// placementEqual compares two optional PluginPlacement pointers.
-func placementEqual(a, b *schemas.PluginPlacement) bool {
-	if a == nil && b == nil {
-		return true
+// generatePluginConfigHash generates a SHA256 hash of a plugin entry as declared in
+// config.json, used to detect file edits across restarts.
+func generatePluginConfigHash(p *schemas.PluginConfig) (string, error) {
+	if p == nil {
+		return "", fmt.Errorf("nil plugin config")
 	}
-	if a == nil || b == nil {
-		return false
+	// placement and order are DB-only fields and not needed for hash calculation
+	declared := *p
+	declared.Placement = nil
+	declared.Order = nil
+	data, err := json.Marshal(&declared)
+	if err != nil {
+		return "", err
 	}
-	return *a == *b
+	sum := sha256.Sum256(data)
+	return hex.EncodeToString(sum[:]), nil
 }
 
-// orderEqual compares two optional int pointers.
-func orderEqual(a, b *int) bool {
-	if a == nil && b == nil {
-		return true
-	}
-	if a == nil || b == nil {
-		return false
-	}
-	return *a == *b
-}
-
-// mergePlugins merges plugins from config file with existing config
-func mergePlugins(ctx context.Context, config *Config, configData *ConfigData) {
+// mergePlugins merges config.json plugins into the plugins already loaded from the store,
+// using hash-based reconciliation. storedHashes holds the hash of config.json recorded at
+// each stored plugin's last sync: a mismatch means the file changed since then and takes
+// precedence, while a match keeps the stored row so UI/API edits survive. Stored plugins
+// predating this reconciliation have no hash, so the file wins for them once.
+func mergePlugins(ctx context.Context, config *Config, configData *ConfigData, storedHashes map[string]string) {
 	logger.Debug("processing plugins from config file")
+	// Hashes to persist for plugins taken from the file, by plugin name.
+	syncedHashes := make(map[string]string, len(configData.Plugins))
 	if len(config.PluginConfigs) == 0 {
 		logger.Debug("no plugins found in store, using plugins from config file")
 		config.PluginConfigs = configData.Plugins
-	} else {
-		// Merge new plugins and update if version is higher
 		for _, plugin := range configData.Plugins {
-			if plugin.Version == nil {
-				plugin.Version = bifrost.Ptr(int16(1))
+			if plugin == nil {
+				continue
+			}
+			fileHash, err := generatePluginConfigHash(plugin)
+			if err != nil {
+				logger.Warn("failed to generate config hash for plugin %s: %v", plugin.Name, err)
+				continue
+			}
+			syncedHashes[plugin.Name] = fileHash
+		}
+	} else {
+		for _, plugin := range configData.Plugins {
+			if plugin == nil {
+				continue
+			}
+			fileHash, err := generatePluginConfigHash(plugin)
+			if err != nil {
+				// Fall through to a file-wins sync, but leave the stored hash alone so the
+				// next startup re-evaluates instead of persisting an empty hash.
+				logger.Warn("failed to generate config hash for plugin %s: %v", plugin.Name, err)
 			}
 			existingIdx := slices.IndexFunc(config.PluginConfigs, func(p *schemas.PluginConfig) bool {
 				return p.Name == plugin.Name
@@ -4476,17 +4499,19 @@ func mergePlugins(ctx context.Context, config *Config, configData *ConfigData) {
 			if existingIdx == -1 {
 				logger.Debug("adding new plugin %s to config.PluginConfigs", plugin.Name)
 				config.PluginConfigs = append(config.PluginConfigs, plugin)
-			} else {
-				existingPlugin := config.PluginConfigs[existingIdx]
-				existingVersion := int16(1)
-				if existingPlugin.Version != nil {
-					existingVersion = *existingPlugin.Version
+				if err == nil {
+					syncedHashes[plugin.Name] = fileHash
 				}
-				placementChanged := !placementEqual(existingPlugin.Placement, plugin.Placement) || !orderEqual(existingPlugin.Order, plugin.Order)
-				if *plugin.Version > existingVersion || placementChanged {
-					logger.Debug("replacing plugin %s (version %d→%d, placementChanged=%v)", plugin.Name, existingVersion, *plugin.Version, placementChanged)
-					config.PluginConfigs[existingIdx] = plugin
-				}
+				continue
+			}
+			if err == nil && storedHashes[plugin.Name] == fileHash {
+				logger.Debug("config hash matches for plugin %s, keeping stored config", plugin.Name)
+				continue
+			}
+			logger.Debug("config hash mismatch for plugin %s, syncing from config file", plugin.Name)
+			config.PluginConfigs[existingIdx] = plugin
+			if err == nil {
+				syncedHashes[plugin.Name] = fileHash
 			}
 		}
 	}
@@ -4500,17 +4525,20 @@ func mergePlugins(ctx context.Context, config *Config, configData *ConfigData) {
 				logger.Warn("failed to deep copy plugin config, skipping database update: %v", err)
 				continue
 			}
-			if plugin.Version == nil {
-				plugin.Version = bifrost.Ptr(int16(1))
+			// Plugins not synced from the file this run keep the hash already stored,
+			// so writing them back does not look like a file change next startup.
+			configHash, ok := syncedHashes[plugin.Name]
+			if !ok {
+				configHash = storedHashes[plugin.Name]
 			}
 			pluginConfig := &configstoreTables.TablePlugin{
-				Name:      plugin.Name,
-				Enabled:   plugin.Enabled,
-				Config:    pluginConfigCopy,
-				Path:      plugin.Path,
-				Version:   *plugin.Version,
-				Placement: plugin.Placement,
-				Order:     plugin.Order,
+				Name:       plugin.Name,
+				Enabled:    plugin.Enabled,
+				Config:     pluginConfigCopy,
+				Path:       plugin.Path,
+				Placement:  plugin.Placement,
+				Order:      plugin.Order,
+				ConfigHash: configHash,
 			}
 			if err := config.ConfigStore.UpsertPlugin(ctx, pluginConfig); err != nil {
 				logger.Warn("failed to update plugin: %v", err)
@@ -4554,17 +4582,20 @@ func syncPluginsFromFile(ctx context.Context, config *Config, configData *Config
 			if err != nil {
 				return fmt.Errorf("failed to deep copy plugin config for %s: %w", plugin.Name, err)
 			}
-			if plugin.Version == nil {
-				plugin.Version = bifrost.Ptr(int16(1))
+			// Record the file hash here too, so plugins stay reconciled if this
+			// deployment later switches back to the store being source of truth.
+			configHash, err := generatePluginConfigHash(plugin)
+			if err != nil {
+				logger.Warn("failed to generate config hash for plugin %s: %v", plugin.Name, err)
 			}
 			tablePlugin := &configstoreTables.TablePlugin{
-				Name:      plugin.Name,
-				Enabled:   plugin.Enabled,
-				Config:    pluginConfigCopy,
-				Path:      plugin.Path,
-				Version:   *plugin.Version,
-				Placement: plugin.Placement,
-				Order:     plugin.Order,
+				Name:       plugin.Name,
+				Enabled:    plugin.Enabled,
+				Config:     pluginConfigCopy,
+				Path:       plugin.Path,
+				Placement:  plugin.Placement,
+				Order:      plugin.Order,
+				ConfigHash: configHash,
 			}
 			if err := config.ConfigStore.UpdatePlugin(ctx, tablePlugin, tx); err != nil {
 				return fmt.Errorf("failed to update plugin %s: %w", plugin.Name, err)

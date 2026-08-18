@@ -3079,23 +3079,6 @@ func migrationAddAdditionalConfigHashColumns(ctx context.Context, db *gorm.DB, l
 				if err := addColumnIfNotExists(tx, logger, &tables.TablePlugin{}, "config_hash"); err != nil {
 					return err
 				}
-				// Pre-populate hashes for existing plugins
-				var plugins []tables.TablePlugin
-				if err := tx.Find(&plugins).Error; err != nil {
-					return fmt.Errorf("failed to fetch plugins for hash migration: %w", err)
-				}
-				logger.Info("[configstore] %s: processing %d plugins", migrationName, len(plugins))
-				for _, plugin := range plugins {
-					if plugin.ConfigHash == "" {
-						hash, err := GeneratePluginHash(plugin)
-						if err != nil {
-							return fmt.Errorf("failed to generate hash for plugin %s: %w", plugin.Name, err)
-						}
-						if err := tx.Model(&plugin).Update("config_hash", hash).Error; err != nil {
-							return fmt.Errorf("failed to update hash for plugin %s: %w", plugin.Name, err)
-						}
-					}
-				}
 			}
 
 			return nil

@@ -1727,13 +1727,6 @@ func GeneratePluginHash(p tables.TablePlugin) (string, error) {
 		}
 	}
 
-	// Hash Version
-	data, err := sonic.Marshal(p.Version)
-	if err != nil {
-		return "", err
-	}
-	hash.Write(data)
-
 	return hex.EncodeToString(hash.Sum(nil)), nil
 }
 
