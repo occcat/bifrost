@@ -1073,10 +1073,6 @@
                 "enabled": {
                   "type": "boolean"
                 },
-                "version": {
-                  "type": "integer",
-                  "minimum": 1
-                },
                 "config": {
                   "type": "object",
                   "properties": {
@@ -1293,10 +1289,6 @@
                 "enabled": {
                   "type": "boolean"
                 },
-                "version": {
-                  "type": "integer",
-                  "minimum": 1
-                },
                 "config": {
                   "type": "object",
                   "properties": {
@@ -1358,10 +1350,6 @@
               "properties": {
                 "enabled": {
                   "type": "boolean"
-                },
-                "version": {
-                  "type": "integer",
-                  "minimum": 1
                 },
                 "config": {
                   "type": "object",
@@ -1494,10 +1482,6 @@
                 "enabled": {
                   "type": "boolean"
                 },
-                "version": {
-                  "type": "integer",
-                  "minimum": 1
-                },
                 "config": {
                   "type": "object",
                   "properties": {
@@ -1571,10 +1555,6 @@
                   },
                   "path": {
                     "type": "string"
-                  },
-                  "version": {
-                    "type": "integer",
-                    "minimum": 1
                   },
                   "config": {
                     "type": "object"
