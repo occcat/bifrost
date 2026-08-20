@@ -13,6 +13,7 @@ import (
 const (
 	ModelConfigScopeGlobal     = "global"
 	ModelConfigScopeVirtualKey = "virtual_key"
+	ModelConfigScopeProject    = "project"
 )
 
 // ModelConfigAllModels is the model_name sentinel meaning "all models". Combined with a

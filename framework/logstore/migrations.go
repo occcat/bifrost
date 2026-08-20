@@ -294,6 +294,8 @@ var logstoreMigrationSteps = []migrationStep{
 	{IDs: []string{"logs_add_cost_breakdown_columns"}, run: migrationAddCostBreakdownColumns},
 	{IDs: []string{"logs_recreate_matviews_with_cost_breakdown"}, run: migrationRecreateMatViewsWithCostBreakdown},
 	{IDs: []string{"logs_add_overhead_breakdown_column"}, run: migrationAddOverheadBreakdownColumn},
+	{IDs: []string{"logs_add_project_columns"}, run: migrationAddProjectColumns},
+	{IDs: []string{"mcp_tool_logs_add_project_columns"}, run: migrationAddProjectColumnsToMCPToolLogs},
 }
 
 // areThereAnyPendingMigrations returns true if there are any pending migrations to be applied.
@@ -3302,6 +3304,87 @@ func migrationAddGovernanceContextColumns(ctx context.Context, db *gorm.DB, logg
 // the full deduped set of teams / business units a request belongs to (enterprise
 // user/AP path). The scalar team_id/business_unit_id remain the primary; these
 // power display, multi-team filtering (jsonb @> + GIN), and fan-out aggregation.
+// migrationAddProjectColumns adds the project dimension to the request log. A request records the
+// project it was scoped to the way it records the team or business unit it was made under: as the
+// resolved id and its display name, so a log row still reads correctly after the project is renamed
+// or deleted.
+//
+// Indexed on the id alone, because that is what filtering and rollups ask about; the name is only
+// ever read back off a row that has already been found.
+func migrationAddProjectColumns(ctx context.Context, db *gorm.DB, logger schemas.Logger) error {
+	migrationName := "logs_add_project_columns"
+	logger.Info("[logstore] starting migration %s", migrationName)
+	defer logger.Info("[logstore] finished migration %s", migrationName)
+	opts := *migrator.DefaultOptions
+	opts.UseTransaction = true
+
+	columns := []string{"project_id", "project_name"}
+
+	m := migrator.New(db, &opts, []*migrator.Migration{{
+		ID: migrationName,
+		Migrate: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+			for _, col := range columns {
+				if err := addColumnIfNotExists(tx, logger, &Log{}, col); err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+		Rollback: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+			for _, col := range columns {
+				if err := dropColumnIfExists(tx, logger, &Log{}, col); err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+	}})
+	if err := m.Migrate(); err != nil {
+		return fmt.Errorf("error while adding project columns: %s", err.Error())
+	}
+	return nil
+}
+
+// migrationAddProjectColumnsToMCPToolLogs is the same dimension on the tool log, so a tool call made
+// inside a project is attributable to it exactly as a model call is.
+func migrationAddProjectColumnsToMCPToolLogs(ctx context.Context, db *gorm.DB, logger schemas.Logger) error {
+	migrationName := "mcp_tool_logs_add_project_columns"
+	logger.Info("[logstore] starting migration %s", migrationName)
+	defer logger.Info("[logstore] finished migration %s", migrationName)
+	opts := *migrator.DefaultOptions
+	opts.UseTransaction = true
+
+	columns := []string{"project_id", "project_name"}
+
+	m := migrator.New(db, &opts, []*migrator.Migration{{
+		ID: migrationName,
+		Migrate: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+			for _, col := range columns {
+				if err := addColumnIfNotExists(tx, logger, &MCPToolLog{}, col); err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+		Rollback: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+			for _, col := range columns {
+				if err := dropColumnIfExists(tx, logger, &MCPToolLog{}, col); err != nil {
+					return err
+				}
+			}
+			return nil
+		},
+	}})
+	if err := m.Migrate(); err != nil {
+		return fmt.Errorf("error while adding project columns to mcp tool logs: %s", err.Error())
+	}
+	return nil
+}
+
 func migrationAddMultiTeamBusinessUnitColumns(ctx context.Context, db *gorm.DB, logger schemas.Logger) error {
 	migrationName := "logs_add_multi_team_business_unit_columns"
 	logger.Info("[logstore] starting migration %s", migrationName)
