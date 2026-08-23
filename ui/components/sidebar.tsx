@@ -15,6 +15,7 @@ import {
 	DatabaseZap,
 	Flag,
 	FolderGit,
+	FolderKanban,
 	Gavel,
 	GitCompareArrows,
 	Globe,
@@ -560,6 +561,7 @@ export default function AppSidebar() {
 	const hasEdgeConfigAccess = useRbac(RbacResource.EdgeConfig, RbacOperation.View);
 	const hasAnyEdgeControlAccess = hasDevicesAccess || hasInventoryAccess || hasEdgeConfigAccess;
 	const hasAccessProfilesAccess = useRbac(RbacResource.AccessProfiles, RbacOperation.View);
+	const hasProjectsAccess = useRbac(RbacResource.Projects, RbacOperation.View);
 	const hasAnyGovernanceAccess =
 		hasVirtualKeysAccess ||
 		hasTeamsAccess ||
@@ -568,6 +570,7 @@ export default function AppSidebar() {
 		hasBusinessUnitsAccess ||
 		hasRbacAccess ||
 		hasAccessProfilesAccess ||
+		hasProjectsAccess ||
 		hasGovernanceLegacyAccess;
 	const { data: coreConfig } = useGetCoreConfigQuery({});
 	const isDbConnected = coreConfig?.is_db_connected ?? false;
@@ -860,6 +863,13 @@ export default function AppSidebar() {
 						hasAccess: hasAccessProfilesAccess,
 					},
 					{
+						title: "Projects",
+						url: "/workspace/governance/projects",
+						icon: FolderKanban,
+						description: "Scope requests to a project's access and budget",
+						hasAccess: hasProjectsAccess,
+					},
+					{
 						title: "Audit Logs",
 						url: "/workspace/audit-logs",
 						icon: ScrollText,
@@ -1095,6 +1105,7 @@ export default function AppSidebar() {
 			hasPromptRepositoryAccess,
 			hasSkillsRepositoryAccess,
 			hasAccessProfilesAccess,
+			hasProjectsAccess,
 			hasFeatureFlagsAccess,
 			hasDevicesAccess,
 			hasInventoryAccess,

@@ -88,6 +88,7 @@ export default function Topbar() {
 	const setDescriptionSlot = useDescriptionSlotRef();
 	const setMobileFilterSlot = useMobileFilterSlotRef();
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 	const [logout] = useLogoutMutation();
 	const { data: coreConfig } = useGetCoreConfigQuery({});
 	// Shares the sidebar's RTK Query cache entry, so this costs no extra request.
@@ -129,7 +130,26 @@ export default function Topbar() {
 				<img className="h-[22px] w-auto max-w-[120px] object-contain md:hidden" src={logoSrc} alt={logoAlt} width={70} height={70} />
 				{/* text-lg font-semibold is the existing in-page <h1> scale, so hoisting
 				    the title here doesn't visually demote it. */}
-				<h1 className="hidden truncate text-lg font-semibold md:block">{title}</h1>
+				{/* A title like "Projects / Atlas" reads as a breadcrumb: the trail dims and clicks back
+				    to the page's index, which is the same route with the sub-entity's search state
+				    cleared; the page keeps the weight. */}
+				<h1 className="hidden truncate text-lg font-semibold md:block">
+					{title?.includes(" / ") ? (
+						<>
+							<button
+								type="button"
+								className="text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+								onClick={() => navigate({ to: pathname, search: {} })}
+								data-testid="topbar-title-trail"
+							>
+								{title.slice(0, title.lastIndexOf(" / ") + 3)}
+							</button>
+							{title.slice(title.lastIndexOf(" / ") + 3)}
+						</>
+					) : (
+						title
+					)}
+				</h1>
 				{/* Anchor for <PageTitle>'s description popover. Pages portal into
 				    this node, so the topbar never has to know their content. */}
 				<span ref={setDescriptionSlot} className="hidden shrink-0 items-center gap-2 md:flex" />
