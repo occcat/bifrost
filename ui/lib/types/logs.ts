@@ -642,6 +642,8 @@ export interface LogEntry {
 	customer_names?: string[];
 	business_unit_ids?: string[];
 	business_unit_names?: string[];
+	project_id?: string;
+	project_name?: string;
 	user_id?: string;
 	user_name?: string;
 	virtual_key_id?: string;
@@ -748,6 +750,7 @@ export interface LogFilters {
 	team_ids?: string[];
 	customer_ids?: string[];
 	business_unit_ids?: string[];
+	project_ids?: string[];
 	apps?: string[]; // Backend-detected client apps
 	user_agents?: string[]; // Raw User-Agent strings; kept for backward compatibility/debug filtering
 }
@@ -1413,7 +1416,7 @@ export interface UserRankingsResponse {
 	rankings: UserRankingEntry[];
 }
 
-export type RankingDimension = "team" | "customer" | "business_unit" | "user" | "app" | "user_agent" | "virtual_key";
+export type RankingDimension = "team" | "customer" | "business_unit" | "project" | "user" | "app" | "user_agent" | "virtual_key";
 
 export interface DimensionRankingTrend {
 	has_previous_period: boolean;

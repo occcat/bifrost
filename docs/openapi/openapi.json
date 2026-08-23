@@ -70769,6 +70769,14 @@
             }
           },
           {
+            "name": "project_ids",
+            "in": "query",
+            "description": "Comma-separated list of project IDs to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "routing_rule_ids",
             "in": "query",
             "description": "Comma-separated list of routing rule IDs to filter by",
@@ -72636,7 +72644,7 @@
       "get": {
         "operationId": "getLogsDimensionCostHistogram",
         "summary": "Get cost histogram by dimension",
-        "description": "Returns time-bucketed cost data grouped by an arbitrary dimension\n(`provider`, `team_id`, `customer_id`, `user_id`, `business_unit_id`).\nThe dimension is supplied via the required `dimension` query parameter.\n",
+        "description": "Returns time-bucketed cost data grouped by an arbitrary dimension\n(`provider`, `team_id`, `customer_id`, `user_id`, `business_unit_id`,\n`project_id`, `app`, `user_agent`). The dimension is supplied via the\nrequired `dimension` query parameter.\n",
         "tags": [
           "Logging"
         ],
@@ -72654,7 +72662,10 @@
                 "team_id",
                 "customer_id",
                 "user_id",
-                "business_unit_id"
+                "business_unit_id",
+                "project_id",
+                "app",
+                "user_agent"
               ]
             }
           },
@@ -72854,7 +72865,10 @@
                         "team_id",
                         "customer_id",
                         "user_id",
-                        "business_unit_id"
+                        "business_unit_id",
+                        "project_id",
+                        "app",
+                        "user_agent"
                       ]
                     },
                     "dimension_values": {
@@ -72913,7 +72927,10 @@
                 "team_id",
                 "customer_id",
                 "user_id",
-                "business_unit_id"
+                "business_unit_id",
+                "project_id",
+                "app",
+                "user_agent"
               ]
             }
           },
@@ -73124,7 +73141,10 @@
                         "team_id",
                         "customer_id",
                         "user_id",
-                        "business_unit_id"
+                        "business_unit_id",
+                        "project_id",
+                        "app",
+                        "user_agent"
                       ]
                     },
                     "dimension_values": {
@@ -73183,7 +73203,10 @@
                 "team_id",
                 "customer_id",
                 "user_id",
-                "business_unit_id"
+                "business_unit_id",
+                "project_id",
+                "app",
+                "user_agent"
               ]
             }
           },
@@ -73398,7 +73421,10 @@
                         "team_id",
                         "customer_id",
                         "user_id",
-                        "business_unit_id"
+                        "business_unit_id",
+                        "project_id",
+                        "app",
+                        "user_agent"
                       ]
                     },
                     "dimension_values": {
@@ -73634,6 +73660,14 @@
             "name": "business_unit_ids",
             "in": "query",
             "description": "Comma-separated list of business unit IDs to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_ids",
+            "in": "query",
+            "description": "Comma-separated list of project IDs to filter by",
             "schema": {
               "type": "string"
             }
@@ -73997,6 +74031,14 @@
             "name": "business_unit_ids",
             "in": "query",
             "description": "Comma-separated list of business unit IDs to filter by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "project_ids",
+            "in": "query",
+            "description": "Comma-separated list of project IDs to filter by",
             "schema": {
               "type": "string"
             }
@@ -74706,7 +74748,7 @@
                     },
                     "dimension_rankings": {
                       "type": "object",
-                      "description": "Ranking tables keyed by dimension (`team`, `user`, `virtual_key`,\n`customer`, `business_unit`); each value is that dimension's rankings.\n",
+                      "description": "Ranking tables keyed by dimension (`team`, `user`, `virtual_key`,\n`customer`, `business_unit`, `project`); each value is that dimension's\nrankings.\n",
                       "additionalProperties": {
                         "type": "object",
                         "description": "Dimension values ranked by usage with trend comparison",
@@ -74771,8 +74813,11 @@
                               "team",
                               "customer",
                               "business_unit",
+                              "project",
                               "user",
-                              "virtual_key"
+                              "virtual_key",
+                              "app",
+                              "user_agent"
                             ]
                           },
                           "total_actual_requests": {
