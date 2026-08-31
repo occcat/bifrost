@@ -957,7 +957,8 @@
                         "parasail",
                         "perplexity",
                         "sgl",
-                        "huggingface"
+                        "huggingface",
+                        "databricks"
                       ]
                     },
                     "embedding_model": {
