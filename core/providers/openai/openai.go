@@ -2083,6 +2083,7 @@ func (provider *OpenAIProvider) Embedding(ctx *schemas.BifrostContext, key schem
 		providerUtils.ShouldSendBackRawRequest(ctx, provider.sendBackRawRequest),
 		providerUtils.ShouldSendBackRawResponse(ctx, provider.sendBackRawResponse),
 		nil,
+		nil,
 		provider.logger,
 	)
 }
@@ -2100,6 +2101,7 @@ func HandleOpenAIEmbeddingRequest(
 	sendBackRawRequest bool,
 	sendBackRawResponse bool,
 	customResponseHandler responseHandler[schemas.BifrostEmbeddingResponse],
+	customErrorConverter ErrorConverter,
 	logger schemas.Logger,
 ) (*schemas.BifrostEmbeddingResponse, *schemas.BifrostError) {
 	// Create request
@@ -2173,6 +2175,9 @@ func HandleOpenAIEmbeddingRequest(
 	if resp.StatusCode() != fasthttp.StatusOK {
 		providerUtils.MaterializeStreamErrorBody(ctx, resp)
 		logger.Debug(fmt.Sprintf("error from %s provider: status %d", providerName, resp.StatusCode()))
+		if customErrorConverter != nil {
+			return nil, providerUtils.EnrichError(ctx, customErrorConverter(resp), jsonData, nil, sendBackRawRequest, sendBackRawResponse, latency)
+		}
 		return nil, providerUtils.EnrichError(ctx, ParseOpenAIError(resp), jsonData, nil, sendBackRawRequest, sendBackRawResponse, latency)
 	}
 
