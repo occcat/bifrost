@@ -471,7 +471,7 @@ export interface CostBreakdown {
 	total_cost?: number;
 }
 
-export interface CacheDebug {
+export interface CacheMetadata {
 	cache_hit: boolean;
 	cache_id?: string;
 	hit_type?: string;
@@ -533,7 +533,7 @@ export interface GuardrailJudgeCall {
 	total_tokens?: number;
 }
 
-export interface GuardrailDebug {
+export interface GuardrailMetadata {
 	judge_calls?: GuardrailJudgeCall[];
 }
 
@@ -547,7 +547,7 @@ export interface RoutingCall {
 	count_toward_budgets?: boolean;
 }
 
-export interface RoutingDebug {
+export interface RoutingMetadata {
 	// One entry per billable routing-classification call this request made: a
 	// semantic classification embed, an llm classification completion, or
 	// both when semantic classification produced no tier and the llm fallback
@@ -707,10 +707,10 @@ export interface LogEntry {
 	overhead_latency?: number; // Bifrost overhead (total minus upstream), ms
 	overhead_breakdown?: OverheadBucket[]; // per-span self-time decomposition of overhead (microseconds)
 	token_usage?: LLMUsage;
-	cache_debug?: CacheDebug;
+	cache_debug?: CacheMetadata;
 	batch_debug?: BatchDebug;
-	guardrail_debug?: GuardrailDebug;
-	routing_debug?: RoutingDebug;
+	guardrail_debug?: GuardrailMetadata;
+	routing_metadata?: RoutingMetadata;
 	cost?: number; // Cost in dollars (total cost of the request - includes cache lookup cost and also guardrail judge calls)
 	cost_breakdown?: CostBreakdown; // Per-category split (input/output/additional); present whenever cost is
 	// Served billing tier, denormalized onto the log row so cost recomputation can reprice

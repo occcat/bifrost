@@ -2434,13 +2434,13 @@ export function LogDetailView({
 							</div>
 						</>
 					)}
-					{!isContainer && !isPassthrough && log.routing_debug?.calls && log.routing_debug.calls.length > 0 && (
+					{!isContainer && !isPassthrough && log.routing_metadata?.calls && log.routing_metadata.calls.length > 0 && (
 						<>
 							<DottedSeparator />
 							<div className="space-y-4">
 								<BlockHeader title="Routing Classification Details" />
 								<div className="space-y-4">
-									{log.routing_debug.calls.map((call, index) => (
+									{log.routing_metadata.calls.map((call, index) => (
 										<div
 											key={`${call.provider_used ?? "routing"}-${call.model_used ?? "call"}-${index}`}
 											className={cn("grid w-full grid-cols-1 gap-4 md:grid-cols-3", index > 0 && "border-border border-t pt-4")}
