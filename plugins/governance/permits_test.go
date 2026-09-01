@@ -1476,7 +1476,7 @@ func TestModelConfigScopesIncludeTheProjectScopingARequest(t *testing.T) {
 	t.Run("the project's permit", func(t *testing.T) {
 		project := permitWithProviders(grant.PermitProject, "proj-1", "Atlas", "openai")
 
-		scope, found := scopeNamed(modelConfigScopesFor(emptyCtx(), project), configstoreTables.ModelConfigScopeProject)
+		scope, found := scopeNamed(modelConfigScopesFor(project), configstoreTables.ModelConfigScopeProject)
 
 		require.True(t, found, "a request running inside a project answers to none of its per-model limits")
 		assert.Equal(t, "proj-1", scope.id)
@@ -1487,7 +1487,7 @@ func TestModelConfigScopesIncludeTheProjectScopingARequest(t *testing.T) {
 	t.Run("a permit that is not a project's", func(t *testing.T) {
 		key := permitWithProviders(grant.PermitVirtualKey, "vk-1", "Key", "openai")
 
-		_, found := scopeNamed(modelConfigScopesFor(emptyCtx(), key), configstoreTables.ModelConfigScopeProject)
+		_, found := scopeNamed(modelConfigScopesFor(key), configstoreTables.ModelConfigScopeProject)
 
 		assert.False(t, found, "a request outside every project was held to a project's per-model limits")
 	})
