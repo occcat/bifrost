@@ -12,6 +12,7 @@ import { RbacOperation, RbacResource, useRbac } from "@enterprise/lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, SaveIcon, Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -45,6 +46,8 @@ const getPluginTypeColor = (type: PluginType) => {
 };
 
 export default function PluginsView(props: Props) {
+	const { t } = useTranslation("governance");
+	const { t: tCommon } = useTranslation("common");
 	const dispatch = useAppDispatch();
 	const hasUpdatePluginAccess = useRbac(RbacResource.Plugins, RbacOperation.Update);
 	const hasDeletePluginAccess = useRbac(RbacResource.Plugins, RbacOperation.Delete);
@@ -94,7 +97,7 @@ export default function PluginsView(props: Props) {
 				try {
 					config = JSON.parse(values.config);
 				} catch {
-					toast.error("Invalid JSON in configuration");
+					toast.error(t("plugins.invalidJson"));
 					return;
 				}
 			}
@@ -107,15 +110,15 @@ export default function PluginsView(props: Props) {
 					...(config !== undefined && { config }),
 				},
 			}).unwrap();
-			toast.success("Plugin updated successfully");
+			toast.success(t("plugins.updated"));
 			form.reset(values);
 		} catch {
-			toast.error("Failed to update plugin");
+			toast.error(t("plugins.updateFailed"));
 		}
 	};
 
 	const onError = () => {
-		toast.error("Please fix the form errors before submitting");
+		toast.error(t("plugins.formErrors"));
 	};
 
 	const handleDeleteClick = () => {
@@ -128,14 +131,14 @@ export default function PluginsView(props: Props) {
 
 	const handleDeleteSuccess = () => {
 		setShowDeleteDialog(false);
-		toast.success("Plugin deleted successfully");
+		toast.success(t("plugins.deleted"));
 		props.onDelete();
 	};
 
 	if (!selectedPlugin) {
 		return (
 			<div className="ml-4 flex w-full items-center justify-center">
-				<p className="text-muted-foreground">No plugin selected</p>
+				<p className="text-muted-foreground">{t("plugins.noPluginSelected")}</p>
 			</div>
 		);
 	}
@@ -150,7 +153,7 @@ export default function PluginsView(props: Props) {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
 					<div className="">
-						<h3 className="mb-4 text-lg font-semibold">Plugin Configuration</h3>
+						<h3 className="mb-4 text-lg font-semibold">{t("plugins.configuration")}</h3>
 						<div className="space-y-6">
 							<FormField
 								control={form.control}
@@ -192,7 +195,7 @@ export default function PluginsView(props: Props) {
 								render={({ field }) => (
 									<FormItem className="flex flex-row items-center justify-between">
 										<div className="space-y-0.5">
-											<FormLabel>Enabled</FormLabel>
+											<FormLabel>{t("plugins.enabled")}</FormLabel>
 											<FormDescription>Enable or disable this plugin</FormDescription>
 										</div>
 										<FormControl>
@@ -314,7 +317,7 @@ export default function PluginsView(props: Props) {
 							disabled={!hasDeletePluginAccess}
 						>
 							<Trash2Icon className="h-4 w-4" />
-							Delete Plugin
+							{t("plugins.deletePlugin")}
 						</Button>
 						<Button
 							type="button"
