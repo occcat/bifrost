@@ -354,7 +354,6 @@ export default function SecurityView() {
 						onCheckedChange={(checked) => handleConfigChange("enforce_auth_on_inference", checked)}
 					/>
 				</div>
-				{/* {t("security.dualCredential")} */}
 				{IS_ENTERPRISE && (
 					<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -391,7 +390,6 @@ export default function SecurityView() {
 						</Select>
 					</div>
 				)}
-				{/* {t("security.allowDirectKeys")} */}
 				<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 					<div className="space-y-0.5">
 						<label htmlFor="allow-direct-keys" className="text-sm font-medium">
@@ -410,7 +408,6 @@ export default function SecurityView() {
 						onCheckedChange={(checked) => handleConfigChange("allow_direct_keys", checked)}
 					/>
 				</div>
-				{/* {t("security.allowedOrigins")} */}
 				{needsRestart && <RestartWarning />}
 				<div>
 					<div className="space-y-2 rounded-sm border p-4">
@@ -433,7 +430,6 @@ export default function SecurityView() {
 						/>
 					</div>
 				</div>
-				{/* {t("security.allowedHeaders")} */}
 				<div>
 					<div className="space-y-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -451,7 +447,6 @@ export default function SecurityView() {
 						/>
 					</div>
 				</div>
-				{/* {t("security.requiredHeaders")} */}
 				<div>
 					<div className="space-y-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -473,7 +468,6 @@ export default function SecurityView() {
 						/>
 					</div>
 				</div>
-				{/* {t("security.whitelistedRoutes")} */}
 				<div>
 					<div className="space-y-2 rounded-sm border p-4">
 						<div className="space-y-0.5">

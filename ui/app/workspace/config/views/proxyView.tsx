@@ -65,7 +65,6 @@ export default function ProxyView() {
 					<PageTitle title={t("proxy.title")}>{t("proxy.description")}</PageTitle>
 
 					<fieldset disabled={!hasSettingsUpdateAccess} className="space-y-4">
-						{/* {t("proxy.enableProxy")} */}
 						<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 							<div className="space-y-0.5">
 								<FormLabel className="text-sm font-medium">Enable Proxy</FormLabel>
@@ -84,11 +83,9 @@ export default function ProxyView() {
 							/>
 						</div>
 
-						{/* {t("proxy.proxyConfiguration")} Section */}
 						<div className={cn("space-y-4 rounded-sm border p-4 transition-opacity", !watchedEnabled && "pointer-events-none opacity-50")}>
 							<h3 className="text-lg font-medium">Proxy Configuration</h3>
 
-							{/* {t("proxy.proxyType")} */}
 							<FormField
 								control={form.control}
 								name="type"
@@ -185,7 +182,6 @@ export default function ProxyView() {
 								</div>
 							</div>
 
-							{/* {t("proxy.advancedSettings")} */}
 							<div className="bg-muted/20 space-y-4 rounded-sm border p-4">
 								<h4 className="text-sm font-medium">Advanced Settings</h4>
 

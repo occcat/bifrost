@@ -82,7 +82,6 @@ export default function LoggingView() {
 			<PageTitle title={t("logging.title")}>{t("logging.description")}</PageTitle>
 
 			<div className="space-y-4">
-				{/* {t("logging.enableLogs")} */}
 				<div>
 					<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -111,7 +110,6 @@ export default function LoggingView() {
 					{needsRestart && <RestartWarning />}
 				</div>
 
-				{/* {t("logging.disableContentLogging")} - Only show when logging is enabled */}
 				{localConfig.enable_logging && bifrostConfig?.is_logs_connected && (
 					<div>
 						<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
@@ -136,7 +134,6 @@ export default function LoggingView() {
 					</div>
 				)}
 
-				{/* {t("logging.retainContent")} - Only show when logging is enabled */}
 				{localConfig.enable_logging && bifrostConfig?.is_logs_connected && (
 					<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -172,7 +169,6 @@ export default function LoggingView() {
 					</div>
 				)}
 
-				{/* {t("logging.allowContentOverride")} - Only show when logging is enabled */}
 				{localConfig.enable_logging && bifrostConfig?.is_logs_connected && (
 					<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -221,7 +217,6 @@ export default function LoggingView() {
 					/>
 				</div>
 
-				{/* {t("logging.logRetentionDays")} */}
 				{localConfig.enable_logging && bifrostConfig?.is_logs_connected && (
 					<div className="flex items-center justify-between space-x-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
@@ -264,7 +259,6 @@ export default function LoggingView() {
 					/>
 				</div>
 
-				{/* {t("logging.loggingHeaders")} */}
 				{localConfig.enable_logging && bifrostConfig?.is_logs_connected && (
 					<div className="space-y-2 rounded-sm border p-4">
 						<label htmlFor="logging-headers" className="text-sm font-medium">
