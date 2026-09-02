@@ -18,9 +18,9 @@ import shellZhCN from "@/locales/zh-CN/shell.json";
 /**
  * i18n namespaces currently wired for Bifrost UI.
  *
- * Active (with copy): common, shell, login
+ * Active (with copy): common, shell, login, config
  * Reserved for other workers (empty JSON stubs — fill keys only):
- * observability, models, mcp, governance, config
+ * observability, models, mcp, governance
  */
 export const NAMESPACES = ["common", "shell", "login", "observability", "models", "mcp", "governance", "config"] as const;
 
