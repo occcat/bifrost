@@ -51,7 +51,7 @@ export default function ImageView({ imageInput, imageEditInput, imageVariationIn
 	const currentImage = images[currentIndex] ?? null;
 
 	// Get method type label
-	const methodTypeLabel = getMethodTypeLabel(requestType);
+	const methodTypeLabel = getMethodTypeLabel(requestType, t);
 
 	// Clamp currentIndex when images array changes to ensure it's always valid
 	useEffect(() => {

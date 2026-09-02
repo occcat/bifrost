@@ -29,6 +29,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { TruncatedLabel } from "@/components/ui/truncatedLabel";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { useTranslation } from "react-i18next";
+import i18n from "@/lib/i18n";
 import { ProviderIconType, RenderProviderIcon, RoutingEngineUsedIcons } from "@/lib/constants/icons";
 import {
 	logAppDisplayName,
@@ -3426,9 +3427,9 @@ const copyRequestBody = async (log: LogEntry, copy: (text: string) => Promise<vo
 		const isSupportedType = isChat || isResponses || isRealtimeTurn || isSpeech || isTextCompletion || isEmbedding;
 		if (!isSupportedType) {
 			if (log.object === "audio.transcription" || log.object === "audio.transcription.chunk") {
-				toast.error(t("logs.detail.copyNotForTranscription"));
+				toast.error(i18n.t("logs.detail.copyNotForTranscription", { ns: "observability" }));
 			} else {
-				toast.error(t("logs.detail.copyOnlyForSupported"));
+				toast.error(i18n.t("logs.detail.copyOnlyForSupported", { ns: "observability" }));
 			}
 			return;
 		}
@@ -3484,6 +3485,6 @@ const copyRequestBody = async (log: LogEntry, copy: (text: string) => Promise<vo
 		const requestBodyJson = JSON.stringify(requestBody, null, 2);
 		await copy(requestBodyJson);
 	} catch {
-		toast.error(t("logs.detail.copyRequestBodyFailed"));
+		toast.error(i18n.t("logs.detail.copyRequestBodyFailed", { ns: "observability" }));
 	}
 };
