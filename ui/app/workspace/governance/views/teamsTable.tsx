@@ -87,7 +87,7 @@ function TeamActionsMenu({
 					<DropdownMenuItem asChild className="cursor-pointer" data-testid={`team-view-logs-btn-${team.name}`}>
 						<Link to="/workspace/logs" search={{ team_ids: [team.id] }} onClick={() => setIsOpen(false)}>
 							<ScrollText className="h-4 w-4" />
-							View logs
+							{t("teams.actions.viewLogs")}
 						</Link>
 					</DropdownMenuItem>
 					<DropdownMenuItem
@@ -111,14 +111,13 @@ function TeamActionsMenu({
 					<AlertDialogHeader>
 						<AlertDialogTitle>{t("teams.deleteTitle")}</AlertDialogTitle>
 						<AlertDialogDescription>
-							Are you sure you want to delete &quot;{team.name}&quot;? This will also unassign any virtual keys from this team. This action
-							cannot be undone.
+							{t("teams.deleteDescription", { name: team.name })}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>{tCommon("cancel")}</AlertDialogCancel>
 						<AlertDialogAction onClick={() => onDelete(team.id)} disabled={isDeleting} className="bg-red-600 hover:bg-red-700">
-							{isDeleting ? "Deleting..." : "Delete"}
+							{isDeleting ? t("teams.deleting") : t("teams.actions.delete")}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
@@ -203,7 +202,7 @@ export default function TeamsTable({
 	// via a correlated subquery, so neither needs a client-side join.
 	const getCustomerName = (team: Team) => {
 		if (!team.customer_id) return "-";
-		return team.customer?.name ?? "Unknown Customer";
+		return team.customer?.name ?? t("teams.unknownCustomer");
 	};
 
 	const hasActiveFilters = debouncedSearch;

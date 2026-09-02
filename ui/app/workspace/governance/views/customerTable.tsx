@@ -81,7 +81,7 @@ function CustomerActionsMenu({ customer, canUpdate, canDelete, onEdit, onDelete 
 					onPointerDown={(e) => e.stopPropagation()}
 				>
 					<Edit className="h-4 w-4" />
-					Edit
+					{t("customers.actions.edit")}
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild className="cursor-pointer" data-testid={`customer-button-view-logs-${customer.id}`}>
 					<Link
@@ -110,7 +110,7 @@ function CustomerActionsMenu({ customer, canUpdate, canDelete, onEdit, onDelete 
 					onPointerDown={(e) => e.stopPropagation()}
 				>
 					<Trash2 className="h-4 w-4" />
-					Delete
+					{t("customers.actions.delete")}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
@@ -547,8 +547,7 @@ export default function CustomersTable({
 						<AlertDialogHeader>
 							<AlertDialogTitle>{t("customers.deleteTitle")}</AlertDialogTitle>
 							<AlertDialogDescription>
-								Are you sure you want to delete &quot;{confirmDeleteCustomer?.name}&quot;? This will also delete all associated teams and
-								unassign any virtual keys. This action cannot be undone.
+								{t("customers.deleteDescription", { name: confirmDeleteCustomer?.name })}
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
@@ -559,7 +558,7 @@ export default function CustomersTable({
 								disabled={isDeleting}
 								className="bg-red-600 hover:bg-red-700"
 							>
-								{isDeleting ? "Deleting..." : "Delete"}
+								{isDeleting ? t("customers.deleting") : t("customers.actions.delete")}
 							</AlertDialogAction>
 						</AlertDialogFooter>
 					</AlertDialogContent>
