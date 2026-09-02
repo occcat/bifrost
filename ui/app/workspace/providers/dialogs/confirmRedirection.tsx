@@ -1,5 +1,4 @@
 import {
-import { useTranslation } from "react-i18next";
 	AlertDialog,
 	AlertDialogAction,
 	AlertDialogCancel,
@@ -9,6 +8,7 @@ import { useTranslation } from "react-i18next";
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alertDialog";
+import { useTranslation } from "react-i18next";
 
 interface Props {
 	show: boolean;
