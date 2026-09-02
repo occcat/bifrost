@@ -1,3 +1,4 @@
+import { LanguageSwitcher } from "@/components/language-switcher";
 import NotificationCenter from "@/components/notificationCenter";
 import { ThemeToggle } from "@/components/themeToggle";
 import { deriveTitleFromPathname } from "@/components/topbar.utils";
@@ -139,6 +140,7 @@ export default function Topbar() {
 			    it's a display preference, not an account action. */}
 			<span ref={setMobileFilterSlot} className="flex shrink-0 items-center md:hidden" />
 			<NotificationCenter />
+			<LanguageSwitcher />
 			<ThemeToggle />
 
 			<DropdownMenu>
