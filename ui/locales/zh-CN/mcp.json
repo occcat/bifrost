@@ -20,7 +20,8 @@
 		"name": "名称",
 		"type": "类型",
 		"created": "创建时间",
-		"revoke": "撤销"
+		"revoke": "撤销",
+		"continue": "继续"
 	},
 	"registry": {
 		"title": "MCP 服务器目录",
@@ -86,7 +87,25 @@
 			"vkAccess": "虚拟密钥访问",
 			"searchVirtualKeys": "搜索虚拟密钥",
 			"healthy": "健康",
-			"unstable": "不稳定"
+			"unstable": "不稳定",
+			"none": "无",
+			"headers": "请求头",
+			"perUserOauth": "每用户 OAuth",
+			"perUserHeaders": "每用户请求头",
+			"tokenExchange": "令牌交换",
+			"allVirtualKeys": "全部虚拟密钥"
+		},
+		"verify": {
+			"verifyAsMe": "以我的身份验证",
+			"reverifyAsMe": "以我的身份重新验证",
+			"establishTitle": "使用你的身份建立 Bifrost 的发现凭证。",
+			"renewTitle": "使用你的身份续期 Bifrost 自身的发现凭证。",
+			"exchangeBody": "这将用你已登录的身份去{{action}} Bifrost 对 {{name}} 的发现凭证。",
+			"establish": "建立",
+			"renew": "续期",
+			"pendingHint": "该凭证仅用于定期拉取此服务器的工具列表，不用于真实用户请求；用户请求的令牌会在每次请求时自动交换。",
+			"renewHint": "该凭证仅用于定期拉取此服务器的工具列表，不用于真实用户请求；用户请求的令牌会在每次请求时自动交换。仅当凭证徽章显示已过期时才需要此操作，但随时运行都是安全的。",
+			"verifying": "验证中…"
 		},
 		"serverFilter": "服务器筛选",
 		"seeAllConnectionStates": "查看全部连接状态"

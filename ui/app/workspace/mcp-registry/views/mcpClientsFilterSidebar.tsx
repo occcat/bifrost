@@ -128,6 +128,43 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 		);
 	}, [filters]);
 
+	const connectionTypeOptions = useMemo(
+		() => CONNECTION_TYPE_OPTIONS.map((o) => ({ ...o })),
+		[],
+	);
+	const authTypeOptions = useMemo(
+		() => [
+			{ value: "none", label: t("registry.filter.none") },
+			{ value: "headers", label: t("registry.filter.headers") },
+			{ value: "oauth", label: "OAuth" },
+			{ value: "per_user_oauth", label: t("registry.filter.perUserOauth") },
+			{ value: "per_user_headers", label: t("registry.filter.perUserHeaders") },
+			{ value: "token_exchange", label: t("registry.filter.tokenExchange") },
+		],
+		[t],
+	);
+	const stateOptions = useMemo(
+		() => [
+			{ value: "healthy", label: t("registry.filter.healthy") },
+			{ value: "unstable", label: t("registry.filter.unstable") },
+		],
+		[t],
+	);
+	const codeModeOptions = useMemo(
+		() => [
+			{ value: "true", label: t("common.enabled") },
+			{ value: "false", label: t("common.disabled") },
+		],
+		[t],
+	);
+	const statusOptions = useMemo(
+		() => [
+			{ value: "false", label: t("common.enabled") },
+			{ value: "true", label: t("common.disabled") },
+		],
+		[t],
+	);
+
 	const handleReset = useCallback(() => {
 		onFiltersChange(EMPTY_FILTERS);
 	}, [onFiltersChange]);
@@ -173,7 +210,7 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 				<div className="flex grow flex-col gap-1">
 					<CheckboxFilterSection
 						title={t("registry.filter.connectionType")}
-						options={CONNECTION_TYPE_OPTIONS}
+						options={connectionTypeOptions}
 						selected={filters.connection_types}
 						defaultOpen
 						onChange={(connection_types) => onFiltersChange({ ...filters, connection_types })}
@@ -181,28 +218,28 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 					/>
 					<CheckboxFilterSection
 						title={t("registry.filter.authType")}
-						options={AUTH_TYPE_OPTIONS}
+						options={authTypeOptions}
 						selected={filters.auth_types}
 						onChange={(auth_types) => onFiltersChange({ ...filters, auth_types })}
 						testIdPrefix="mcp-clients-filter-auth-type"
 					/>
 					<CheckboxFilterSection
 						title={t("registry.filter.state")}
-						options={STATE_OPTIONS}
+						options={stateOptions}
 						selected={filters.states}
 						onChange={(states) => onFiltersChange({ ...filters, states })}
 						testIdPrefix="mcp-clients-filter-state"
 					/>
 					<CheckboxFilterSection
 						title={t("registry.filter.codeMode")}
-						options={CODE_MODE_OPTIONS}
+						options={codeModeOptions}
 						selected={filters.code_mode}
 						onChange={(code_mode) => onFiltersChange({ ...filters, code_mode })}
 						testIdPrefix="mcp-clients-filter-code-mode"
 					/>
 					<CheckboxFilterSection
 						title={t("registry.filter.status")}
-						options={STATUS_OPTIONS}
+						options={statusOptions}
 						selected={filters.status}
 						onChange={(status) => onFiltersChange({ ...filters, status })}
 						testIdPrefix="mcp-clients-filter-status"
@@ -452,7 +489,7 @@ function VKAccessFilterSection({ filters, onFiltersChange }: SidebarProps) {
 			<SearchableCheckboxList
 				inputRef={searchInputRef}
 				placeholder={t("registry.filter.searchVirtualKeys")}
-				pinnedItems={[{ key: ALL_VKS_KEY, label: "All virtual keys" }]}
+				pinnedItems={[{ key: ALL_VKS_KEY, label: t("registry.filter.allVirtualKeys") }]}
 				items={virtualKeys.map((vk) => ({ key: vk.id, label: vk.name }))}
 				isSelected={isSelected}
 				onToggle={toggle}

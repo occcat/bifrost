@@ -715,12 +715,12 @@ export default function MCPClientsTable({
 							/>
 							<div className="min-w-0 space-y-0.5">
 								<DialogTitle className="text-sm leading-snug font-medium">
-									{exchangeVerifyClient?.state === "pending_verification" ? "Verify as me" : "Re-verify as me"}
+									{exchangeVerifyClient?.state === "pending_verification" ? t("registry.verify.verifyAsMe") : t("registry.verify.reverifyAsMe")}
 								</DialogTitle>
 								<DialogDescription className="text-xs leading-relaxed">
 									{exchangeVerifyClient?.state === "pending_verification"
-										? "Establish Bifrost's discovery credential using your identity."
-										: "Renew Bifrost's own discovery credential using your identity."}
+										? t("registry.verify.establishTitle")
+										: t("registry.verify.renewTitle")}
 								</DialogDescription>
 							</div>
 						</div>
@@ -728,20 +728,18 @@ export default function MCPClientsTable({
 					<div className="space-y-3 px-5 py-4">
 						<InfoBox icon={<KeyRound className="size-4" />}>
 							<p>
-								This exchanges your own signed-in identity to{" "}
-								{exchangeVerifyClient?.state === "pending_verification" ? "establish" : "renew"} Bifrost&apos;s discovery credential for{" "}
-								<strong>{exchangeVerifyClient?.config.name}</strong>.
+								{t("registry.verify.exchangeBody", {
+									action: exchangeVerifyClient?.state === "pending_verification" ? t("registry.verify.establish") : t("registry.verify.renew"),
+									name: exchangeVerifyClient?.config.name,
+								})}
 							</p>
 							{exchangeVerifyClient?.state === "pending_verification" ? (
 								<p className="text-muted-foreground/80 text-xs">
-									That credential is only used to periodically fetch this server&apos;s tool list, not for real user requests, whose tokens
-									are exchanged automatically on every request.
+									{t("registry.verify.pendingHint")}
 								</p>
 							) : (
 								<p className="text-muted-foreground/80 text-xs">
-									That credential is only used to periodically fetch this server&apos;s tool list, not for real user requests, whose tokens
-									are exchanged automatically on every request. You only need this if the credential badge shows it&apos;s expired, but
-									running it any time is safe.
+									{t("registry.verify.renewHint")}
 								</p>
 							)}
 						</InfoBox>
@@ -769,7 +767,9 @@ export default function MCPClientsTable({
 								{exchangeVerifyClient && verifyingExchangeClients.includes(exchangeVerifyClient.config.client_id) ? (
 									<Loader2 className="size-3.5 animate-spin" />
 								) : null}
-								Continue
+								{exchangeVerifyClient && verifyingExchangeClients.includes(exchangeVerifyClient.config.client_id)
+									? t("registry.verify.verifying")
+									: t("common.continue")}
 							</Button>
 						</div>
 					</div>
@@ -810,12 +810,12 @@ export default function MCPClientsTable({
 							/>
 							<div className="min-w-0 space-y-0.5">
 								<DialogTitle className="text-sm leading-snug font-medium">
-									{exchangeVerifyClient?.state === "pending_verification" ? "Verify as me" : "Re-verify as me"}
+									{exchangeVerifyClient?.state === "pending_verification" ? t("registry.verify.verifyAsMe") : t("registry.verify.reverifyAsMe")}
 								</DialogTitle>
 								<DialogDescription className="text-xs leading-relaxed">
 									{exchangeVerifyClient?.state === "pending_verification"
-										? "Establish Bifrost's discovery credential using your identity."
-										: "Renew Bifrost's own discovery credential using your identity."}
+										? t("registry.verify.establishTitle")
+										: t("registry.verify.renewTitle")}
 								</DialogDescription>
 							</div>
 						</div>
@@ -823,20 +823,18 @@ export default function MCPClientsTable({
 					<div className="space-y-3 px-5 py-4">
 						<InfoBox icon={<KeyRound className="size-4" />}>
 							<p>
-								This exchanges your own signed-in identity to{" "}
-								{exchangeVerifyClient?.state === "pending_verification" ? "establish" : "renew"} Bifrost&apos;s discovery credential for{" "}
-								<strong>{exchangeVerifyClient?.config.name}</strong>.
+								{t("registry.verify.exchangeBody", {
+									action: exchangeVerifyClient?.state === "pending_verification" ? t("registry.verify.establish") : t("registry.verify.renew"),
+									name: exchangeVerifyClient?.config.name,
+								})}
 							</p>
 							{exchangeVerifyClient?.state === "pending_verification" ? (
 								<p className="text-muted-foreground/80 text-xs">
-									That credential is only used to periodically fetch this server&apos;s tool list, not for real user requests, whose tokens
-									are exchanged automatically on every request.
+									{t("registry.verify.pendingHint")}
 								</p>
 							) : (
 								<p className="text-muted-foreground/80 text-xs">
-									That credential is only used to periodically fetch this server&apos;s tool list, not for real user requests, whose tokens
-									are exchanged automatically on every request. You only need this if the credential badge shows it&apos;s expired, but
-									running it any time is safe.
+									{t("registry.verify.renewHint")}
 								</p>
 							)}
 						</InfoBox>
@@ -864,7 +862,9 @@ export default function MCPClientsTable({
 								{exchangeVerifyClient && verifyingExchangeClients.includes(exchangeVerifyClient.config.client_id) ? (
 									<Loader2 className="size-3.5 animate-spin" />
 								) : null}
-								Continue
+								{exchangeVerifyClient && verifyingExchangeClients.includes(exchangeVerifyClient.config.client_id)
+									? t("registry.verify.verifying")
+									: t("common.continue")}
 							</Button>
 						</div>
 					</div>
@@ -1017,7 +1017,7 @@ export default function MCPClientsTable({
 												    that can't be reached right now is still configured for code
 												    mode or not. */}
 												<Badge className={c.config.is_code_mode_client ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}>
-													{c.config.is_code_mode_client ? "Enabled" : "Disabled"}
+													{c.config.is_code_mode_client ? t("common.enabled") : t("common.disabled")}
 												</Badge>
 											</TableCell>
 											<TableCell data-testid="mcp-client-vk-access">

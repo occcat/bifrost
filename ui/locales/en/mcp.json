@@ -20,7 +20,8 @@
 		"name": "Name",
 		"type": "Type",
 		"created": "Created",
-		"revoke": "Revoke"
+		"revoke": "Revoke",
+		"continue": "Continue"
 	},
 	"registry": {
 		"title": "MCP Server Catalog",
@@ -86,7 +87,25 @@
 			"vkAccess": "VK Access",
 			"searchVirtualKeys": "Search virtual keys",
 			"healthy": "Healthy",
-			"unstable": "Unstable"
+			"unstable": "Unstable",
+			"none": "None",
+			"headers": "Headers",
+			"perUserOauth": "Per-User OAuth",
+			"perUserHeaders": "Per-User Headers",
+			"tokenExchange": "Token Exchange",
+			"allVirtualKeys": "All virtual keys"
+		},
+		"verify": {
+			"verifyAsMe": "Verify as me",
+			"reverifyAsMe": "Re-verify as me",
+			"establishTitle": "Establish Bifrost's discovery credential using your identity.",
+			"renewTitle": "Renew Bifrost's own discovery credential using your identity.",
+			"exchangeBody": "This exchanges your own signed-in identity to {{action}} Bifrost's discovery credential for {{name}}.",
+			"establish": "establish",
+			"renew": "renew",
+			"pendingHint": "That credential is only used to periodically fetch this server's tool list, not for real user requests, whose tokens are exchanged automatically on every request.",
+			"renewHint": "That credential is only used to periodically fetch this server's tool list, not for real user requests, whose tokens are exchanged automatically on every request. You only need this if the credential badge shows it's expired, but running it any time is safe.",
+			"verifying": "Verifying..."
 		},
 		"serverFilter": "Server filter",
 		"seeAllConnectionStates": "See all connection states"
