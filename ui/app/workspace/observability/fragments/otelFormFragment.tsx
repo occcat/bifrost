@@ -455,7 +455,7 @@ function OtelProfileSection({ form, control, index, hasOtelAccess, canRemove, op
 							<FormItem className="w-full">
 								<FormControl>
 									<HeadersTable
-										label="Common Headers"
+										label={t("connectors.commonHeaders")}
 										value={field.value || {}}
 										onChange={field.onChange}
 										disabled={!hasOtelAccess}
@@ -598,7 +598,7 @@ function OtelProfileSection({ form, control, index, hasOtelAccess, canRemove, op
 											<FormItem className="w-full">
 												<FormControl>
 													<HeadersTable
-														label="Trace Headers"
+														label={t("connectors.traceHeaders")}
 														value={field.value || {}}
 														onChange={field.onChange}
 														disabled={!hasOtelAccess}
@@ -832,7 +832,7 @@ function OtelProfileSection({ form, control, index, hasOtelAccess, canRemove, op
 											<FormItem className="w-full">
 												<FormControl>
 													<HeadersTable
-														label="Metrics Headers"
+														label={t("connectors.metricsHeaders")}
 														value={field.value || {}}
 														onChange={field.onChange}
 														disabled={!hasOtelAccess}
