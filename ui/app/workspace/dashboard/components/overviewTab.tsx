@@ -17,7 +17,7 @@ import {
 	LATENCY_COLORS,
 	OTHER_SERIES_COLOR,
 	OTHER_SERIES_KEY,
-	OTHER_SERIES_LABEL,
+	getOtherSeriesLabel,
 	THROUGHPUT_COLOR,
 	formatTokensPerSecond,
 	getModelColor,
@@ -325,7 +325,7 @@ function OverviewTabImpl({
 																		backgroundColor: model === OTHER_SERIES_KEY ? OTHER_SERIES_COLOR : getModelColor(idx + 1),
 																	}}
 																/>
-																{model === OTHER_SERIES_KEY ? OTHER_SERIES_LABEL : model}
+																{model === OTHER_SERIES_KEY ? getOtherSeriesLabel() : model}
 															</span>
 														))}
 													</div>
@@ -401,7 +401,7 @@ function OverviewTabImpl({
 																		backgroundColor: model === OTHER_SERIES_KEY ? OTHER_SERIES_COLOR : getModelColor(idx + 1),
 																	}}
 																/>
-																{model === OTHER_SERIES_KEY ? OTHER_SERIES_LABEL : model}
+																{model === OTHER_SERIES_KEY ? getOtherSeriesLabel() : model}
 															</span>
 														))}
 													</div>
