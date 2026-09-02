@@ -48,7 +48,16 @@
 		"allProviders": "All Providers",
 		"allTools": "All Tools",
 		"allServers": "All Servers",
-		"unnamed": "(unnamed)"
+		"unnamed": "(unnamed)",
+		"noData": "No data available",
+		"page": "Page",
+		"ofPages": "of {{total}}",
+		"count": "Count",
+		"tokensPerSec": "Tokens/sec",
+		"completionTokens": "Completion tokens",
+		"direct": "Direct",
+		"semantic": "Semantic",
+		"costLegend": "Cost"
 	},
 	"dashboard": {
 		"tabs": {
@@ -93,7 +102,12 @@
 			"topMcpTools": "Top 10 MCP Tools",
 			"topModels": "Top Models",
 			"chartRenderError": "Chart rendering error:",
-			"externalCacheInfo": "More information about external cache hit rate"
+			"externalCacheInfo": "More information about external cache hit rate",
+			"localCacheCaption": "of requests served from local cache",
+			"externalCacheCaption": "of input tokens cached by provider",
+			"externalCacheNote": "This reflects provider-level caching, not Bifrost semantic cache hits.",
+			"cachedRead": "Cached: {{value}}",
+			"inputRead": "Input: {{value}}"
 		},
 		"rankings": {
 			"topDimension": "Top {{dimension}}s",
@@ -106,7 +120,8 @@
 			"noData": "No {{dimension}} usage data available for this time period.",
 			"attributedTooltipShort": "Attributed - a request counts toward each {{dimension}} it belongs to, so this can exceed the actual request count.",
 			"attributedTooltipLong": "A request counts toward each {{dimension}} it belongs to, so this can exceed the total request count."
-		}
+		},
+		"noModelUsage": "No model usage data available for this time period."
 	},
 	"logs": {
 		"searchPlaceholder": "Search logs",
@@ -232,7 +247,8 @@
 			"documentUrl": "DOCUMENT URL",
 			"imageUrl": "IMAGE URL",
 			"video": "Video"
-		}
+		},
+		"waitingForNew": "Waiting for new logs..."
 	},
 	"mcpLogs": {
 		"searchPlaceholder": "Search MCP logs",
@@ -273,7 +289,19 @@
 			"metadata": "Metadata",
 			"deleteFailed": "Failed to delete log",
 			"invalidDate": "Invalid date"
-		}
+		},
+		"waitingForNew": "Waiting for new MCP logs...",
+		"loadingDetails": "Loading MCP log details",
+		"noPluginLogs": "No plugin logs for this request.",
+		"deleteConfirmTitle": "Are you sure you want to delete this log?",
+		"deleteConfirmDesc": "This action cannot be undone. This will permanently delete the log entry.",
+		"exportJson": "Export as JSON",
+		"showOriginal": "Show original values",
+		"arguments": "Arguments",
+		"result": "Result",
+		"execution": "Execution",
+		"errorDetails": "Error Details",
+		"pluginLogs": "Plugin Logs"
 	},
 	"connectors": {
 		"providers": "Providers",
@@ -314,6 +342,10 @@
 			"saved": "Plugin tracing configuration saved",
 			"stillLoading": "Plugin list is still loading. Please wait before saving.",
 			"notConfigured": "{{destination}} is not configured yet. Save its configuration before configuring plugin tracing."
-		}
+		},
+		"savePrometheus": "Save Prometheus Configuration",
+		"saveOtel": "Save OTEL Configuration",
+		"saveMaxim": "Save Maxim Configuration",
+		"reset": "Reset"
 	}
 }
