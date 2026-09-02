@@ -28,6 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { TruncatedLabel } from "@/components/ui/truncatedLabel";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
+import { useTranslation } from "react-i18next";
 import { ProviderIconType, RenderProviderIcon, RoutingEngineUsedIcons } from "@/lib/constants/icons";
 import {
 	logAppDisplayName,
@@ -698,6 +699,7 @@ function buildOverheadCategories(buckets: OverheadBucket[]): OverheadCategory[] 
 // overhead number. "View details" expands the categories that hold more than one span
 // into their individual members so a specific phase or plugin can be inspected.
 function OverheadBreakdown({ buckets, overheadMs }: { buckets: OverheadBucket[]; overheadMs?: number }) {
+	const { t } = useTranslation("observability");
 	const [showDetails, setShowDetails] = useState(false);
 	if (!buckets || buckets.length === 0) return null;
 
@@ -717,7 +719,7 @@ function OverheadBreakdown({ buckets, overheadMs }: { buckets: OverheadBucket[];
 	return (
 		<div className="space-y-3">
 			<div className="flex items-center justify-between gap-2">
-				<BlockHeader title="Overhead Breakdown" />
+				<BlockHeader title={t("logs.detail.overheadBreakdown")} />
 				<div className="font-mono text-xs tabular-nums">{formatMicros(overheadUs ?? sumUs)}</div>
 			</div>
 
@@ -789,7 +791,8 @@ function OverheadBreakdown({ buckets, overheadMs }: { buckets: OverheadBucket[];
 }
 
 function CopyInlineButton({ text, testId }: { text: string; testId?: string }) {
-	const { copy } = useCopyToClipboard({ successMessage: "Copied" });
+	const { t } = useTranslation("observability");
+	const { copy } = useCopyToClipboard({ successMessage: t("labels.copied") });
 	return (
 		<button
 			type="button"
@@ -798,7 +801,7 @@ function CopyInlineButton({ text, testId }: { text: string; testId?: string }) {
 				copy(text);
 			}}
 			className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex h-6 w-6 items-center justify-center rounded-sm transition"
-			aria-label="Copy"
+			aria-label={t("labels.copy")}
 			data-testid={testId}
 		>
 			<Clipboard className="h-3.5 w-3.5" />
@@ -966,9 +969,10 @@ export function LogDetailView({
 	headerAction,
 	onFilterByParentRequestId,
 }: LogDetailViewProps) {
+	const { t } = useTranslation("observability");
 	const { copy: copyBody } = useCopyToClipboard({
-		successMessage: "Request body copied to clipboard",
-		errorMessage: "Failed to copy request body",
+		successMessage: t("logs.detail.copyRequestBodySuccess"),
+		errorMessage: t("logs.detail.copyRequestBodyFailed"),
 	});
 	const [showRevealedValues, setShowRevealedValues] = useState(false);
 	const revealMapping = log?.redaction_mapping;
@@ -1264,7 +1268,7 @@ export function LogDetailView({
 							type="button"
 							onClick={onClose}
 							data-testid="logdetails-close-button"
-							aria-label="Close"
+							aria-label={t("labels.close")}
 						>
 							<X className="h-3 w-3" />
 						</Button>
@@ -1406,7 +1410,7 @@ export function LogDetailView({
 				</div>
 				<div className="border-border grid grid-cols-1 border-t sm:grid-cols-2 md:grid-cols-5">
 					<HeroStat
-						label="Latency"
+						label={t("labels.latency")}
 						valueClass="text-primary"
 						value={log.latency == null || isNaN(log.latency) ? "—" : formatLatency(log.latency)}
 						sub={(() => {
@@ -1428,7 +1432,7 @@ export function LogDetailView({
 						hasRightBorder
 					/>
 					<HeroStat
-						label="Tokens in / out"
+						label={t("logs.detail.tokensInOut")}
 						mono
 						value={
 							log.token_usage
@@ -1464,7 +1468,7 @@ export function LogDetailView({
 						/>
 					) : (
 						<HeroStat
-							label="Tools available"
+							label={t("logs.detail.toolsAvailable")}
 							value={declaredTools.length.toString()}
 							sub={(log.params as any)?.tool_choice != null ? `choice: ${formatToolChoice((log.params as any).tool_choice)}` : ""}
 						/>
@@ -1481,11 +1485,11 @@ export function LogDetailView({
 				</summary>
 				<div className="space-y-4 border-t px-4 py-4 md:px-6">
 					<div className="space-y-4">
-						<BlockHeader title="Timings" />
+						<BlockHeader title={t("logs.detail.timings")} />
 						<div className="grid w-full grid-cols-1 items-center justify-between gap-4 md:grid-cols-3">
 							<LogEntryDetailsView
 								className="w-full"
-								label="Start Timestamp"
+								label={t("logs.detail.startTimestamp")}
 								value={(() => {
 									const d = log.timestamp ? new Date(log.timestamp) : null;
 									return d && !isNaN(d.getTime()) ? format(d, "yyyy-MM-dd hh:mm:ss aa") : "N/A";
@@ -1493,7 +1497,7 @@ export function LogDetailView({
 							/>
 							<LogEntryDetailsView
 								className="w-full"
-								label="End Timestamp"
+								label={t("logs.detail.endTimestamp")}
 								value={(() => {
 									const d = log.timestamp ? new Date(log.timestamp) : null;
 									return d && !isNaN(d.getTime()) ? format(addMilliseconds(d, log.latency || 0), "yyyy-MM-dd hh:mm:ss aa") : "N/A";
@@ -1501,20 +1505,20 @@ export function LogDetailView({
 							/>
 							<LogEntryDetailsView
 								className="w-full"
-								label="Latency"
-								tooltip="Total end-to-end request time: upstream plus Bifrost overhead."
+								label={t("labels.latency")}
+								tooltip={t("logs.detail.totalLatencyTooltip")}
 								value={log.latency == null || isNaN(log.latency) ? "N/A" : <div>{log.latency.toFixed(2)}ms</div>}
 							/>
 							<LogEntryDetailsView
 								className="w-full"
-								label="Upstream Latency"
-								tooltip="Time spent waiting on the provider, summed across every attempt."
+								label={t("logs.detail.upstreamLatency")}
+								tooltip={t("logs.detail.upstreamLatencyTooltip")}
 								value={log.upstream_latency == null || isNaN(log.upstream_latency) ? "N/A" : <div>{log.upstream_latency.toFixed(2)}ms</div>}
 							/>
 							<LogEntryDetailsView
 								className="w-full"
-								label="Bifrost Overhead"
-								tooltip="Time added by Bifrost itself: routing, plugins, and processing."
+								label={t("logs.detail.bifrostOverhead")}
+								tooltip={t("logs.detail.bifrostOverheadTooltip")}
 								value={log.overhead_latency == null || isNaN(log.overhead_latency) ? "N/A" : <div>{log.overhead_latency.toFixed(2)}ms</div>}
 							/>
 						</div>
@@ -1524,7 +1528,7 @@ export function LogDetailView({
 					</div>
 					<DottedSeparator />
 					<div className="space-y-4">
-						<BlockHeader title="Request Details" />
+						<BlockHeader title={t("logs.detail.requestDetails")} />
 						<div className="grid w-full grid-cols-1 items-start justify-between gap-4 md:grid-cols-3">
 							<LogEntryDetailsView
 								className="w-full"
@@ -1768,7 +1772,7 @@ export function LogDetailView({
 													{log.user_name || log.user_id}
 												</Link>
 											</TooltipTrigger>
-											<TooltipContent sideOffset={6}>{log.user_name ? log.user_id : "Filter by user"}</TooltipContent>
+											<TooltipContent sideOffset={6}>{log.user_name ? log.user_id : t("logs.detail.filterByUser")}</TooltipContent>
 										</Tooltip>
 									}
 								/>
@@ -3422,9 +3426,9 @@ const copyRequestBody = async (log: LogEntry, copy: (text: string) => Promise<vo
 		const isSupportedType = isChat || isResponses || isRealtimeTurn || isSpeech || isTextCompletion || isEmbedding;
 		if (!isSupportedType) {
 			if (log.object === "audio.transcription" || log.object === "audio.transcription.chunk") {
-				toast.error("Copy request body is not available for transcription requests");
+				toast.error(t("logs.detail.copyNotForTranscription"));
 			} else {
-				toast.error("Copy request body is only available for chat, responses, compaction, speech, text completion, and embedding requests");
+				toast.error(t("logs.detail.copyOnlyForSupported"));
 			}
 			return;
 		}
@@ -3480,6 +3484,6 @@ const copyRequestBody = async (log: LogEntry, copy: (text: string) => Promise<vo
 		const requestBodyJson = JSON.stringify(requestBody, null, 2);
 		await copy(requestBodyJson);
 	} catch {
-		toast.error("Failed to copy request body");
+		toast.error(t("logs.detail.copyRequestBodyFailed"));
 	}
 };
