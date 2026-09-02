@@ -339,8 +339,10 @@
 		"downloadFailed": "下载技能失败",
 		"downloadAllFailed": "下载技能失败",
 		"deleteSkill": "删除技能",
+		"deleting": "删除中…",
 		"toastDeleted": "技能已删除",
 		"toastDeleteFailed": "删除技能失败",
+		"toastBumpSuccess": "all-skills 版本已提升至 {{version}}",
 		"toastBumpFailed": "提升 all-skills 版本失败"
 	},
 	"promptRepo": {

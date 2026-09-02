@@ -1,6 +1,6 @@
 {
 	"saveChanges": "Save Changes",
-	"saving": "Saving...",
+	"saving": "Saving…",
 	"addHeader": "Add Header",
 	"restartRequiredAlert": "These settings require a Bifrost service restart to take effect. Current connections will continue with existing settings until restart.",
 	"restartWarning": "Need to restart Bifrost to apply changes.",
@@ -173,7 +173,7 @@
 	"featureFlags": {
 		"title": "Feature Flags",
 		"description": "Toggle in-process feature flags. Flags are declared in code; values can also be set via config.json or Helm, in which case they appear here as locked.",
-		"loading": "Loading feature flags...",
+		"loading": "Loading feature flags…",
 		"loadFailed": "Failed to load feature flags: {{error}}",
 		"flag": "Flag",
 		"enabled": "Enabled",
@@ -311,7 +311,7 @@
 		"toastInvalidRegex": "Regex pattern is invalid."
 	},
 	"apiKeys": {
-		"loading": "Loading...",
+		"loading": "Loading…",
 		"needSecurity": "To generate API keys, you need to set up admin username and password first.",
 		"configureSecurity": "Configure Security Settings",
 		"needSecurityAfter": "Once generated you will need to use this API key for all API calls to the Bifrost admin APIs and UI.",
@@ -324,11 +324,11 @@
 		"description": "Manage Agent Skills for distribution to AI coding assistants",
 		"createSkill": "Create Skill",
 		"createFirstAria": "Create your first skill",
-		"searchPlaceholder": "Search skills...",
+		"searchPlaceholder": "Search skills…",
 		"searchAria": "Search skills by name",
 		"registerMarketplace": "Register as Marketplace",
 		"downloadZip": "Download ZIP",
-		"downloading": "Downloading...",
+		"downloading": "Downloading…",
 		"downloadAll": "Download All Skills",
 		"downloadAllAria": "Download all skills",
 		"newSkill": "New skill",
@@ -339,8 +339,10 @@
 		"downloadFailed": "Failed to download skill",
 		"downloadAllFailed": "Failed to download skills",
 		"deleteSkill": "Delete skill",
+		"deleting": "Deleting…",
 		"toastDeleted": "Skill deleted",
 		"toastDeleteFailed": "Failed to delete skill",
+		"toastBumpSuccess": "All-skills version bumped to {{version}}",
 		"toastBumpFailed": "Failed to bump all-skills version"
 	},
 	"promptRepo": {

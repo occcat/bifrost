@@ -138,7 +138,6 @@ export default function ModelSettingsView() {
 				<PageTitle title={t("modelSettings.title")}>{t("modelSettings.description")}</PageTitle>
 
 				<div className="space-y-4">
-					{/* {t("modelSettings.pricingUrl")} */}
 					<div className="space-y-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
 							<Label htmlFor="pricing-datasheet-url">Pricing Datasheet URL</Label>
@@ -167,7 +166,6 @@ export default function ModelSettingsView() {
 						{errors.pricing_datasheet_url && <p className="text-destructive text-sm">{errors.pricing_datasheet_url.message}</p>}
 					</div>
 
-					{/* {t("modelSettings.modelParamsUrl")} */}
 					<div className="space-y-2 rounded-sm border p-4">
 						<div className="space-y-0.5">
 							<Label htmlFor="model-parameters-url">Model Parameters URL</Label>
@@ -254,7 +252,6 @@ export default function ModelSettingsView() {
 						)}
 					</div>
 
-					{/* {t("modelSettings.routingChainMaxDepth")} */}
 					<div className="flex items-center justify-between rounded-sm border p-4">
 						<div className="space-y-0.5">
 							<Label htmlFor="routing-chain-max-depth">Routing Chain Max Depth</Label>

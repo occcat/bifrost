@@ -100,7 +100,7 @@ function MarketplacePopover() {
 			<PopoverTrigger asChild>
 				<Button variant="outline" size="sm" title={t("skillsRepo.registerMarketplace")} aria-label={t("skillsRepo.registerMarketplace")}>
 					<Package className="h-3.5 w-3.5" />
-					<span className="hidden md:inline">Register as Marketplace</span>
+					<span className="hidden md:inline">{t("skillsRepo.registerMarketplace")}</span>
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent align="end" className="w-[calc(100vw-2rem)] max-w-md p-0 md:w-auto">
@@ -271,10 +271,10 @@ function SkillActionsMenu({
 						<AlertDialogAction data-testid="skill-delete-confirm-btn" onClick={() => onDelete(skill.id)} disabled={isDeleting}>
 							{isDeleting ? (
 								<>
-									<Loader2 className="h-3.5 w-3.5 animate-spin" /> Deleting...
+									<Loader2 className="h-3.5 w-3.5 animate-spin" /> {t("skillsRepo.deleting")}
 								</>
 							) : (
-								"Delete skill"
+								t("skillsRepo.deleteSkill")
 							)}
 						</AlertDialogAction>
 					</AlertDialogFooter>
@@ -351,7 +351,7 @@ export function SkillsListView({
 	const handleBumpAllSkillsVersion = async (bump: AllSkillsVersionBump) => {
 		try {
 			const result = await bumpAllSkillsVersion({ bump }).unwrap();
-			toast.success(`All-skills version bumped to ${result.version}`);
+			toast.success(t("skillsRepo.toastBumpSuccess", { version: result.version }));
 			refetchAllSkillsVersion();
 		} catch (err: unknown) {
 			toast.error(t("skillsRepo.toastBumpFailed"), {
@@ -495,7 +495,7 @@ export function SkillsListView({
 									<span tabIndex={0}>
 										<Button variant="outline" size="sm" disabled title={t("skillsRepo.registerMarketplace")} aria-label={t("skillsRepo.registerMarketplace")}>
 											<Package className="h-3.5 w-3.5" />
-											<span className="hidden md:inline">Register as Marketplace</span>
+											<span className="hidden md:inline">{t("skillsRepo.registerMarketplace")}</span>
 										</Button>
 									</span>
 								</TooltipTrigger>
