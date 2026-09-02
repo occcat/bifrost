@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { RbacOperation, RbacResource, useRbac } from "@enterprise/lib";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, SaveIcon, Trash2Icon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -22,15 +22,13 @@ interface Props {
 	onCreate: (pluginName: string) => void;
 }
 
-const pluginFormSchema = z.object({
-	name: z.string().min(1, "Name is required"),
-	enabled: z.boolean(),
-	path: z.string().optional(),
-	config: z.string().optional(),
-	hasConfig: z.boolean(),
-});
-
-type PluginFormValues = z.infer<typeof pluginFormSchema>;
+type PluginFormValues = {
+	name: string;
+	enabled: boolean;
+	path?: string;
+	config?: string;
+	hasConfig: boolean;
+};
 
 const getPluginTypeColor = (type: PluginType) => {
 	switch (type) {
@@ -55,6 +53,18 @@ export default function PluginsView(props: Props) {
 	const selectedPlugin = useAppSelector((state) => state.plugin.selectedPlugin);
 	const [showConfig, setShowConfig] = useState(false);
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+	const pluginFormSchema = useMemo(
+		() =>
+			z.object({
+				name: z.string().min(1, t("plugins.nameRequired")),
+				enabled: z.boolean(),
+				path: z.string().optional(),
+				config: z.string().optional(),
+				hasConfig: z.boolean(),
+			}),
+		[t],
+	);
 
 	const form = useForm<PluginFormValues>({
 		resolver: zodResolver(pluginFormSchema),
@@ -160,11 +170,11 @@ export default function PluginsView(props: Props) {
 								name="name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Name</FormLabel>
+										<FormLabel>{t("plugins.name")}</FormLabel>
 										<FormControl>
-											<Input placeholder="Plugin name" {...field} readOnly disabled className="cursor-not-allowed" />
+											<Input placeholder={t("plugins.nameLabel")} {...field} readOnly disabled className="cursor-not-allowed" />
 										</FormControl>
-										<FormDescription>The name of the plugin</FormDescription>
+										<FormDescription>{t("plugins.nameHelp")}</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -172,7 +182,7 @@ export default function PluginsView(props: Props) {
 
 							{selectedPlugin.status?.types && selectedPlugin.status.types.length > 0 && (
 								<FormItem>
-									<FormLabel>Types</FormLabel>
+									<FormLabel>{t("plugins.types")}</FormLabel>
 									<FormControl>
 										<div className="flex flex-wrap gap-1">
 											{selectedPlugin.status.types.map((type) => (
@@ -196,7 +206,7 @@ export default function PluginsView(props: Props) {
 									<FormItem className="flex flex-row items-center justify-between">
 										<div className="space-y-0.5">
 											<FormLabel>{t("plugins.enabled")}</FormLabel>
-											<FormDescription>Enable or disable this plugin</FormDescription>
+											<FormDescription>{t("plugins.enabledHelp")}</FormDescription>
 										</div>
 										<FormControl>
 											<Switch checked={field.value} onCheckedChange={field.onChange} />
@@ -210,11 +220,11 @@ export default function PluginsView(props: Props) {
 								name="path"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Path</FormLabel>
+										<FormLabel>{t("plugins.path")}</FormLabel>
 										<FormControl>
-											<Input placeholder="Plugin path" {...field} value={field.value || ""} />
+											<Input placeholder={t("plugins.pathLabel")} {...field} value={field.value || ""} />
 										</FormControl>
-										<FormDescription>The file system path to the plugin</FormDescription>
+										<FormDescription>{t("plugins.pathHelp")}</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -244,7 +254,7 @@ export default function PluginsView(props: Props) {
 									render={({ field }) => (
 										<FormItem>
 											<div className="flex items-center justify-between">
-												<FormLabel>Configuration (JSON)</FormLabel>
+												<FormLabel>{t("plugins.configJson")}</FormLabel>
 												<Button
 													type="button"
 													variant="ghost"
@@ -278,7 +288,7 @@ export default function PluginsView(props: Props) {
 													/>
 												</div>
 											</FormControl>
-											<FormDescription>Plugin configuration in JSON format</FormDescription>
+											<FormDescription>{t("plugins.configJsonHelp")}</FormDescription>
 											<FormMessage />
 										</FormItem>
 									)}
@@ -325,11 +335,11 @@ export default function PluginsView(props: Props) {
 							onClick={() => form.reset()}
 							disabled={!form.formState.isDirty || !hasUpdatePluginAccess}
 						>
-							Reset
+							{t("plugins.reset")}
 						</Button>
 						<Button type="submit" disabled={isLoading || !form.formState.isDirty || !hasUpdatePluginAccess}>
 							<SaveIcon className="h-4 w-4" />
-							{isLoading ? "Saving..." : "Save Changes"}
+							{isLoading ? t("plugins.saving") : t("plugins.saveChanges")}
 						</Button>
 					</div>
 				</form>
