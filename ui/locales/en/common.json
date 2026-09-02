@@ -14,5 +14,12 @@
 	"yes": "Yes",
 	"no": "No",
 	"actions": "Actions",
-	"language": "Language"
+	"language": "Language",
+	"saveChanges": "Save Changes",
+	"saving": "Saving…",
+	"enabled": "Enabled",
+	"disabled": "Disabled",
+	"loadingEllipsis": "Loading…",
+	"copiedToClipboard": "Copied to clipboard",
+	"copyFailed": "Failed to copy to clipboard"
 }
