@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default function ContactUsView({ icon, title, description, className, readmeLink, align = "middle", testIdPrefix }: Props) {
-	const { t } = useTranslation("config");
+	const { t } = useTranslation("governance");
 
 	return (
 		<div className={cn("flex flex-col items-center gap-4 text-center", align === "middle" ? "justify-center" : "justify-start", className)}>
@@ -25,24 +25,24 @@ export default function ContactUsView({ icon, title, description, className, rea
 				<div className="mx-auto flex flex-row items-center gap-2">
 					<Button
 						variant="outline"
-						aria-label={t("enterprise.readMoreAria")}
+						aria-label={t("contactUs.readMoreAria")}
 						className="mx-auto mt-6"
 						data-testid={testIdPrefix ? `${testIdPrefix}-read-more` : undefined}
 						onClick={() => {
 							window.open(`${readmeLink}?utm_source=bfd`, "_blank", "noopener,noreferrer");
 						}}
 					>
-						{t("enterprise.readMore")} <ArrowUpRight className="text-muted-foreground h-3 w-3" />
+						{t("contactUs.readMore")} <ArrowUpRight className="text-muted-foreground h-3 w-3" />
 					</Button>
 					<Button
 						className="mx-auto mt-6"
-						aria-label={t("enterprise.bookDemoAria")}
+						aria-label={t("contactUs.bookDemoAria")}
 						data-testid={testIdPrefix ? `${testIdPrefix}-book-demo` : undefined}
 						onClick={() => {
 							window.open("https://calendly.com/maximai/bifrost-demo?utm_source=bfd_ent", "_blank", "noopener,noreferrer");
 						}}
 					>
-						{t("enterprise.bookDemo")}
+						{t("contactUs.bookDemo")}
 					</Button>
 				</div>
 			</div>
