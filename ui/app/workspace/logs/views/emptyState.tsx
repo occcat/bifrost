@@ -8,7 +8,6 @@ import { getExampleBaseUrl } from "@/lib/utils/port";
 import { AlertTriangle, Copy } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useTranslation } from "react-i18next";
 
 type Provider = "openai" | "anthropic" | "genai" | "litellm" | "langchain";
 type Language = "python" | "typescript";
