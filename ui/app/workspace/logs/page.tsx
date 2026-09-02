@@ -30,12 +30,14 @@ import { AlertCircle, BarChart, CheckCircle, Clock, DollarSign, Hash, Info } fro
 import { parseAsSafeArrayOf, parseAsSafeString } from "@/lib/queryParamsParser";
 import { parseAsBoolean, parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // A fallback chain is a handful of attempts, so one page covers every realistic
 // chain. Capped at the list endpoint's own maximum.
 const chainChildrenPageLimit = 1000;
 
 export default function LogsPage() {
+	const { t } = useTranslation("observability");
 	const [error, setError] = useState<string | null>(null);
 	const [showEmptyState, setShowEmptyState] = useState(false);
 	const hasCheckedEmptyState = useRef(false);
@@ -484,19 +486,18 @@ export default function LogsPage() {
 	const statCards = useMemo(
 		() => [
 			{
-				title: "Total Requests",
+				title: t("logs.stats.totalRequests"),
 				value: <NumberFlow value={stats?.total_requests ?? 0} format={COMPACT_NUMBER_FORMAT} />,
 				icon: <BarChart className="size-4" />,
 			},
 			{
-				title: "Success Rate",
+				title: t("logs.stats.successRate"),
 				value: <NumberFlow value={stats?.success_rate ?? 0} format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }} suffix="%" />,
 				icon: <CheckCircle className="size-4" />,
-				description:
-					"Success rate as perceived by the system. Each fallback counts as a separate attempt. Retries on the same request are counted as one attempt.",
+				description: t("logs.stats.successRateDesc"),
 			},
 			{
-				title: "User Success Rate",
+				title: t("logs.stats.userSuccessRate"),
 				value: (
 					<NumberFlow
 						value={stats?.user_facing_success_rate ?? 0}
@@ -505,17 +506,17 @@ export default function LogsPage() {
 					/>
 				),
 				icon: <CheckCircle className="size-4" />,
-				description: "Success rate as perceived by the end user. It includes fallback chains as one request.",
+				description: t("logs.stats.userSuccessRateDesc"),
 			},
 			{
-				title: "Avg Latency",
+				title: t("logs.stats.avgLatency"),
 				value: (
 					<NumberFlow value={stats?.average_latency ?? 0} format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }} suffix="ms" />
 				),
 				icon: <Clock className="size-4" />,
 			},
 			{
-				title: "Total Tokens",
+				title: t("logs.stats.totalTokens"),
 				value: <NumberFlow value={stats?.total_tokens ?? 0} format={COMPACT_NUMBER_FORMAT} />,
 				icon: <Hash className="size-4" />,
 				subValue: (
@@ -526,10 +527,10 @@ export default function LogsPage() {
 						<span> out</span>
 					</>
 				),
-				description: "Total tokens used, split into input (prompt) and output (completion) tokens.",
+				description: t("logs.stats.totalTokensDesc"),
 			},
 			{
-				title: "Total Cost",
+				title: t("logs.stats.totalCost"),
 				value: (
 					<NumberFlow
 						value={stats?.total_cost ?? 0}
@@ -568,8 +569,8 @@ export default function LogsPage() {
 	}, [userAgentMappingsData?.mappings]);
 
 	const columns = useMemo(
-		() => createColumns(handleDelete, hasDeleteAccess, metadataKeys, customAppIcons, grouped),
-		[customAppIcons, handleDelete, hasDeleteAccess, metadataKeys, grouped],
+		() => createColumns(handleDelete, hasDeleteAccess, metadataKeys, customAppIcons, grouped, t),
+		[customAppIcons, handleDelete, hasDeleteAccess, metadataKeys, grouped, t],
 	);
 
 	const columnIds = useMemo(
@@ -579,24 +580,24 @@ export default function LogsPage() {
 
 	const COLUMN_LABELS: Record<string, string> = useMemo(
 		() => ({
-			timestamp: "Time",
-			request_type: "Type",
-			input: "Message",
-			provider: "Provider",
-			model: "Model",
-			app: "App",
-			latency: "Latency",
-			tokens: "Tokens",
-			cost: "Cost",
-			service_tier: "Service Tier",
-			virtual_key: "Virtual Key",
-			routing_rule: "Routing Rule",
-			team: "Team",
-			customer: "Customer",
-			user: "User",
-			business_unit: "Business Unit",
+			timestamp: t("labels.time"),
+			request_type: t("labels.type"),
+			input: t("labels.message"),
+			provider: t("labels.provider"),
+			model: t("labels.model"),
+			app: t("labels.app"),
+			latency: t("labels.latency"),
+			tokens: t("labels.tokens"),
+			cost: t("labels.cost"),
+			service_tier: t("labels.serviceTier"),
+			virtual_key: t("labels.virtualKey"),
+			routing_rule: t("labels.routingRule"),
+			team: t("labels.team"),
+			customer: t("labels.customer"),
+			user: t("labels.user"),
+			business_unit: t("labels.businessUnit"),
 		}),
-		[],
+		[t],
 	);
 
 	const DEFAULT_HIDDEN_COLUMNS = useMemo(
@@ -800,7 +801,7 @@ export default function LogsPage() {
 														<TooltipTrigger asChild>
 															<button
 																type="button"
-																aria-label={`${card.title} info`}
+																aria-label={t("logs.stats.infoAria", { title: card.title })}
 																data-testid={`logs-metric-info-${card.title.toLowerCase().replace(/\s+/g, "-")}`}
 																className="inline-flex items-center"
 															>

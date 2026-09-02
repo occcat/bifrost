@@ -248,7 +248,8 @@
 			"imageUrl": "图片 URL",
 			"video": "视频"
 		},
-		"waitingForNew": "等待新日志…"
+		"waitingForNew": "等待新日志…",
+		"loading": "正在加载日志…"
 	},
 	"mcpLogs": {
 		"searchPlaceholder": "搜索 MCP 日志",
@@ -301,7 +302,8 @@
 		"result": "结果",
 		"execution": "执行",
 		"errorDetails": "错误详情",
-		"pluginLogs": "插件日志"
+		"pluginLogs": "插件日志",
+		"loading": "正在加载 MCP 日志…"
 	},
 	"connectors": {
 		"providers": "提供商",
@@ -346,6 +348,7 @@
 		"savePrometheus": "保存 Prometheus 配置",
 		"saveOtel": "保存 OTEL 配置",
 		"saveMaxim": "保存 Maxim 配置",
-		"reset": "重置"
+		"reset": "重置",
+		"plugins": "插件"
 	}
 }

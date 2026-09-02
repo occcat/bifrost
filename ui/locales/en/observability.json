@@ -248,7 +248,8 @@
 			"imageUrl": "IMAGE URL",
 			"video": "Video"
 		},
-		"waitingForNew": "Waiting for new logs..."
+		"waitingForNew": "Waiting for new logs...",
+		"loading": "Loading logs..."
 	},
 	"mcpLogs": {
 		"searchPlaceholder": "Search MCP logs",
@@ -301,7 +302,8 @@
 		"result": "Result",
 		"execution": "Execution",
 		"errorDetails": "Error Details",
-		"pluginLogs": "Plugin Logs"
+		"pluginLogs": "Plugin Logs",
+		"loading": "Loading MCP logs..."
 	},
 	"connectors": {
 		"providers": "Providers",
@@ -346,6 +348,7 @@
 		"savePrometheus": "Save Prometheus Configuration",
 		"saveOtel": "Save OTEL Configuration",
 		"saveMaxim": "Save Maxim Configuration",
-		"reset": "Reset"
+		"reset": "Reset",
+		"plugins": "Plugins"
 	}
 }
