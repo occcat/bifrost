@@ -277,6 +277,7 @@ func (s *RDBConfigStore) UpdateClientConfig(ctx context.Context, config *ClientC
 		CompatConvertChatToResponses:          config.Compat.ConvertChatToResponses,
 		CompatShouldDropParams:                config.Compat.ShouldDropParams,
 		CompatShouldConvertParams:             config.Compat.ShouldConvertParams,
+		CompatAzureDeepseek:                   config.Compat.AzureDeepseek,
 		MCPAgentDepth:                         config.MCPAgentDepth,
 		MCPToolExecutionTimeout:               config.MCPToolExecutionTimeout,
 		MCPCodeModeBindingLevel:               config.MCPCodeModeBindingLevel,
@@ -326,6 +327,11 @@ func (s *RDBConfigStore) UpdateClientConfig(ctx context.Context, config *ClientC
 		// update mirroring the Delete above.
 		if config.MCPToolSyncInterval == 0 {
 			if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&tables.TableClientConfig{}).Update("mcp_tool_sync_interval", 0).Error; err != nil {
+				return err
+			}
+		}
+		if !config.Compat.AzureDeepseek {
+			if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&tables.TableClientConfig{}).Update("compat_azure_deepseek", false).Error; err != nil {
 				return err
 			}
 		}
@@ -561,6 +567,7 @@ func (s *RDBConfigStore) GetClientConfig(ctx context.Context) (*ClientConfig, er
 			ConvertChatToResponses: dbConfig.CompatConvertChatToResponses,
 			ShouldDropParams:       dbConfig.CompatShouldDropParams,
 			ShouldConvertParams:    dbConfig.CompatShouldConvertParams,
+			AzureDeepseek:          dbConfig.CompatAzureDeepseek,
 		},
 		MCPAgentDepth:                         dbConfig.MCPAgentDepth,
 		MCPToolExecutionTimeout:               dbConfig.MCPToolExecutionTimeout,

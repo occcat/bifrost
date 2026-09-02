@@ -478,6 +478,40 @@ var configstoreMigrationSteps = []migrationStep{
 	{IDs: []string{"add_vk_rotation_cooldown_columns"}, run: migrationAddVKRotationCooldownColumns},
 	{IDs: []string{"add_vk_rotation_cooldown_client_column"}, run: migrationAddVKRotationCooldownClientColumn},
 	{IDs: []string{"drop_legacy_oauth_user_fk_constraints"}, run: migrationDropLegacyOauthUserFKConstraints},
+	{IDs: []string{"add_compat_azure_deepseek_column"}, run: migrationAddCompatAzureDeepseekColumn},
+}
+
+// migrationAddCompatAzureDeepseekColumn adds the compat_azure_deepseek column to
+// config_client.
+func migrationAddCompatAzureDeepseekColumn(ctx context.Context, db *gorm.DB, logger schemas.Logger) error {
+	migrationName := "add_compat_azure_deepseek_column"
+	logger.Info("[configstore] starting migration %s", migrationName)
+	defer logger.Info("[configstore] finished migration %s", migrationName)
+	m := migrator.New(db, migrator.DefaultOptions, []*migrator.Migration{{
+		ID: migrationName,
+		Migrate: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+
+			if err := addColumnIfNotExists(tx, logger, &tables.TableClientConfig{}, "CompatAzureDeepseek"); err != nil {
+				return fmt.Errorf("failed to add compat_azure_deepseek column: %w", err)
+			}
+
+			return nil
+		},
+		Rollback: func(tx *gorm.DB) error {
+			tx = tx.WithContext(ctx)
+
+			if err := dropColumnIfExists(tx, logger, &tables.TableClientConfig{}, "compat_azure_deepseek"); err != nil {
+				return fmt.Errorf("failed to drop compat_azure_deepseek column: %w", err)
+			}
+
+			return nil
+		},
+	}})
+	if err := m.Migrate(); err != nil {
+		return fmt.Errorf("error running compat_azure_deepseek migration: %s", err.Error())
+	}
+	return nil
 }
 
 // migrationAddBatchJobsAttributionColumns adds the requester-identity columns to

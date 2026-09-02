@@ -679,6 +679,7 @@ var DefaultClientConfig = configstore.ClientConfig{
 	MCPEnableTempTokenAuth:          false,
 	HideDeletedVirtualKeysInFilters: false,
 	RoutingChainMaxDepth:            rules.DefaultChainMaxDepth,
+	Compat:                          configstore.CompatConfig{AzureDeepseek: true},
 }
 
 // applyV1Compat normalizes ConfigData to restore v1.4.x allow-list semantics.

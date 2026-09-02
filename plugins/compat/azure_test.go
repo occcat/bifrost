@@ -4,7 +4,10 @@ import (
 	"slices"
 	"testing"
 
+	bifrost "github.com/maximhq/bifrost/core"
 	"github.com/maximhq/bifrost/core/schemas"
+	"github.com/maximhq/bifrost/framework/modelcatalog"
+	"github.com/maximhq/bifrost/framework/modelcatalog/datasheet"
 )
 
 // newDeepSeekResponsesRequest builds a Responses request carrying reasoning.effort.
@@ -113,5 +116,39 @@ func TestAzureDeepSeekResponsesRouting(t *testing.T) {
 				t.Errorf("dropped params %v contains reasoning = %v, want %v", dropped, got, tt.wantDropListHas)
 			}
 		})
+	}
+}
+
+func TestAzureDeepSeekResponsesRoutingDisabled(t *testing.T) {
+	const model = "DeepSeek-V3.1"
+
+	ds := datasheet.NewTestStore(nil)
+	ds.SetSupportedParamsForTest(map[string][]string{model: {"reasoning", "temperature"}})
+	p, err := Init(
+		Config{ShouldDropParams: true, AzureDeepseek: false},
+		bifrost.NewNoOpLogger(),
+		modelcatalog.NewTestCatalogWithDatasheet(ds),
+	)
+	if err != nil {
+		t.Fatalf("Init: %v", err)
+	}
+
+	ctx := newTestContext()
+	ctx.SetValue(schemas.BifrostContextKeyUserAgent, "claude-cli/2.1.168 (external, cli)")
+
+	got, _, hookErr := p.PreLLMHook(ctx, newDeepSeekResponsesRequest(schemas.Azure, model, schemas.ResponsesRequest))
+	if hookErr != nil {
+		t.Fatalf("PreLLMHook: %v", hookErr)
+	}
+
+	if _, converted := ctx.Value(schemas.BifrostContextKeyChangeRequestType).(schemas.RequestType); converted {
+		t.Error("request was converted to chat completions with the toggle off")
+	}
+	if got.ResponsesRequest.Params.Reasoning != nil {
+		t.Error("reasoning survived, but Azure's Responses endpoint rejects it")
+	}
+	dropped, _ := ctx.Value(schemas.BifrostContextKeyCompatDroppedParams).([]string)
+	if !slices.Contains(dropped, "reasoning") {
+		t.Errorf("dropped params %v does not contain reasoning", dropped)
 	}
 }
