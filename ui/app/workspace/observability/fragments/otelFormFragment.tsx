@@ -326,6 +326,8 @@ interface OtelProfileSectionProps {
 // OtelProfileSection renders one collapsible profile. The header stays visible when collapsed
 // and surfaces the profile identity plus its enable toggle and remove control.
 function OtelProfileSection({ form, control, index, hasOtelAccess, canRemove, open, onOpenChange, onRemove }: OtelProfileSectionProps) {
+	const { t } = useTranslation("observability");
+	const traceTypeOptions = getTraceTypeOptions(t);
 	const base = `profiles.${index}` as const;
 	const protocol = form.watch(`${base}.protocol`);
 	const tracesEnabled = form.watch(`${base}.traces_enabled`);
@@ -396,8 +398,8 @@ function OtelProfileSection({ form, control, index, hasOtelAccess, canRemove, op
 						onClick={onRemove}
 						disabled={!hasOtelAccess}
 						data-testid={`otel-profile-${index}-remove-btn`}
-						title="Remove profile"
-						aria-label="Remove profile"
+						title={t("connectors.removeProfile")}
+						aria-label={t("connectors.removeProfile")}
 					>
 						<Trash2 className="size-4" />
 					</Button>
