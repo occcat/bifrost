@@ -7,6 +7,7 @@ import { ModelProvider } from "@/lib/types/config";
 import { cn } from "@/lib/utils";
 import { formatCurrency } from "@/lib/utils/governance";
 import { RbacOperation, RbacResource, useRbac } from "@enterprise/lib";
+import { useTranslation } from "react-i18next";
 
 interface Props {
 	className?: string;
@@ -153,6 +154,7 @@ function MetricCard({
 }
 
 export default function ProviderGovernanceTable({ provider, className }: Props) {
+	const { t } = useTranslation("models");
 	const hasViewAccess = useRbac(RbacResource.Governance, RbacOperation.View);
 	const { data: providerGovernanceData, isLoading } = useGetProviderGovernanceQuery(undefined, {
 		skip: !hasViewAccess,
@@ -170,7 +172,7 @@ export default function ProviderGovernanceTable({ provider, className }: Props) 
 			<div className={cn("w-full", className)}>
 				<CardHeader className="mb-4 px-0">
 					<CardTitle className="flex items-center justify-between">
-						<div className="flex items-center gap-2">Governance</div>
+						<div className="flex items-center gap-2">{t("providers.governance")}</div>
 					</CardTitle>
 				</CardHeader>
 				<div className="flex items-center justify-center py-12">
@@ -203,7 +205,7 @@ export default function ProviderGovernanceTable({ provider, className }: Props) 
 		<div className={cn("w-full", className)}>
 			<CardHeader className="mb-4 px-0">
 				<CardTitle className="flex items-center justify-between">
-					<div className="flex items-center gap-2">Governance</div>
+					<div className="flex items-center gap-2">{t("providers.governance")}</div>
 				</CardTitle>
 			</CardHeader>
 
@@ -224,7 +226,7 @@ export default function ProviderGovernanceTable({ provider, className }: Props) 
 				{/* Token Rate Limit Card */}
 				{rateLimit?.token_max_limit && (
 					<MetricCard
-						title="Token Limit"
+						title={t("providers.tokenLimit")}
 						value={rateLimit.token_current_usage}
 						max={rateLimit.token_max_limit}
 						unit="tokens"
@@ -236,7 +238,7 @@ export default function ProviderGovernanceTable({ provider, className }: Props) 
 				{/* Request Rate Limit Card */}
 				{rateLimit?.request_max_limit && (
 					<MetricCard
-						title="Request Limit"
+						title={t("providers.requestLimit")}
 						value={rateLimit.request_current_usage}
 						max={rateLimit.request_max_limit}
 						unit="requests"
