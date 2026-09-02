@@ -9,6 +9,7 @@ import { useGetVirtualKeysQuery } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { ChevronDown, LoaderCircle, PanelLeftClose, RotateCcw, Search } from "lucide-react";
 import { type Ref, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const COLLAPSE_STORAGE_KEY = "mcp-clients-filter-sidebar-collapsed";
 const VK_PAGE_SIZE = 25;
@@ -91,6 +92,7 @@ interface SidebarProps {
 // ---------------------------------------------------------------------------
 
 export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarProps) {
+	const { t } = useTranslation("mcp");
 	const isMobile = useIsMobile();
 	const [collapsed, setCollapsed] = useState(false);
 
@@ -139,7 +141,7 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 	return (
 		<div className="bg-card fixed inset-y-2 left-2 z-40 flex h-auto w-[calc(100vw-1rem)] max-w-72 shrink-0 flex-col rounded-md border shadow-xl md:static md:h-full md:w-64 md:max-w-none md:rounded-md md:shadow-none">
 			<div className="flex h-11 items-center justify-between border-b pr-2 pl-5">
-				<span className="text-sm font-semibold">Filters</span>
+				<span className="text-sm font-semibold">{t("common.filters")}</span>
 				<div className="flex items-center gap-1">
 					{activeFilterCount > 0 && (
 						<Button
@@ -150,7 +152,7 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 							data-testid="mcpClientsFilterSidebar-reset-button"
 						>
 							<RotateCcw className="size-3" />
-							Reset
+							{t("common.reset")}
 						</Button>
 					)}
 					<Button
@@ -158,8 +160,8 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 						size="icon"
 						className="size-7"
 						onClick={toggleCollapsed}
-						title="Hide filters"
-						aria-label="Hide filters"
+						title={t("common.hideFilters")}
+						aria-label={t("common.hideFilters")}
 						data-testid="mcpClientsFilterSidebar-toggle-hide"
 					>
 						<PanelLeftClose className="size-4" />
@@ -170,7 +172,7 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 			<ScrollArea className="flex flex-1 overflow-y-auto p-2 pb-0" viewportClassName="no-table">
 				<div className="flex grow flex-col gap-1">
 					<CheckboxFilterSection
-						title="Connection Type"
+						title={t("registry.filter.connectionType")}
 						options={CONNECTION_TYPE_OPTIONS}
 						selected={filters.connection_types}
 						defaultOpen
@@ -178,28 +180,28 @@ export function MCPClientsFilterSidebar({ filters, onFiltersChange }: SidebarPro
 						testIdPrefix="mcp-clients-filter-connection-type"
 					/>
 					<CheckboxFilterSection
-						title="Auth Type"
+						title={t("registry.filter.authType")}
 						options={AUTH_TYPE_OPTIONS}
 						selected={filters.auth_types}
 						onChange={(auth_types) => onFiltersChange({ ...filters, auth_types })}
 						testIdPrefix="mcp-clients-filter-auth-type"
 					/>
 					<CheckboxFilterSection
-						title="State"
+						title={t("registry.filter.state")}
 						options={STATE_OPTIONS}
 						selected={filters.states}
 						onChange={(states) => onFiltersChange({ ...filters, states })}
 						testIdPrefix="mcp-clients-filter-state"
 					/>
 					<CheckboxFilterSection
-						title="Code Mode"
+						title={t("registry.filter.codeMode")}
 						options={CODE_MODE_OPTIONS}
 						selected={filters.code_mode}
 						onChange={(code_mode) => onFiltersChange({ ...filters, code_mode })}
 						testIdPrefix="mcp-clients-filter-code-mode"
 					/>
 					<CheckboxFilterSection
-						title="Status"
+						title={t("registry.filter.status")}
 						options={STATUS_OPTIONS}
 						selected={filters.status}
 						onChange={(status) => onFiltersChange({ ...filters, status })}
@@ -334,6 +336,8 @@ function CheckboxFilterSection({
 // filtering is applied on top of the (debounced) onSearch callback so the caller
 // can fetch server-side results. Mirrors the logs filter sidebar pattern.
 function SearchableCheckboxList({
+	// i18n for empty-state copy
+
 	items,
 	pinnedItems = [],
 	isSelected,
@@ -356,6 +360,7 @@ function SearchableCheckboxList({
 	onSearch?: (query: string) => void;
 	fetching?: boolean;
 }) {
+	const { t } = useTranslation("mcp");
 	const [query, setQuery] = useState("");
 	const normalized = query.trim().toLowerCase();
 	const filtered = normalized ? items.filter((item) => item.label.toLowerCase().includes(normalized)) : items;
@@ -401,7 +406,7 @@ function SearchableCheckboxList({
 					testId={testIdPrefix ? `${testIdPrefix}-checkbox-${item.key}` : undefined}
 				/>
 			))}
-			{filtered.length === 0 && <div className="text-muted-foreground flex h-9 items-center px-3 text-xs">No results</div>}
+			{filtered.length === 0 && <div className="text-muted-foreground flex h-9 items-center px-3 text-xs">{t("common.noResults")}</div>}
 		</>
 	);
 }
@@ -418,6 +423,7 @@ function SearchableCheckboxList({
 const ALL_VKS_KEY = "__all_virtual_keys__";
 
 function VKAccessFilterSection({ filters, onFiltersChange }: SidebarProps) {
+	const { t } = useTranslation("mcp");
 	const hasActive = filters.only_all_vks || filters.virtual_keys.length > 0;
 	const [opened, setOpened] = useState(hasActive);
 	const [searchQuery, setSearchQuery] = useState("");
@@ -442,10 +448,10 @@ function VKAccessFilterSection({ filters, onFiltersChange }: SidebarProps) {
 	};
 
 	return (
-		<FilterSection title="VK Access" defaultOpen={hasActive} onOpenChange={setOpened} testId="mcp-clients-filter-vk-access-toggle">
+		<FilterSection title={t("registry.filter.vkAccess")} defaultOpen={hasActive} onOpenChange={setOpened} testId="mcp-clients-filter-vk-access-toggle">
 			<SearchableCheckboxList
 				inputRef={searchInputRef}
-				placeholder="Search virtual keys"
+				placeholder={t("registry.filter.searchVirtualKeys")}
 				pinnedItems={[{ key: ALL_VKS_KEY, label: "All virtual keys" }]}
 				items={virtualKeys.map((vk) => ({ key: vk.id, label: vk.name }))}
 				isSelected={isSelected}
