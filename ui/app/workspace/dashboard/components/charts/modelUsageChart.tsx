@@ -14,6 +14,7 @@ import {
 } from "../../utils/chartUtils";
 import { ChartErrorBoundary } from "./chartErrorBoundary";
 import type { ChartType } from "./chartTypeToggle";
+import { NoChartData } from "./noChartData";
 
 // Sanitize model names to avoid Recharts interpreting dots/brackets as path separators
 function sanitizeModelKey(model: string): string {
@@ -145,7 +146,7 @@ function ModelUsageChartImpl({ data, chartType, startTime, endTime, selectedMode
 	}, [data, selectedModel]);
 
 	if (!data?.buckets || chartData.length === 0) {
-		return <div className="text-muted-foreground flex h-full items-center justify-center text-sm">No data available</div>;
+		return <NoChartData />;
 	}
 
 	const commonProps = {
