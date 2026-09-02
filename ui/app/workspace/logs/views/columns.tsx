@@ -24,6 +24,7 @@ import { ArrowUpDown, ChevronRight, CornerDownRight, Loader2, MoreHorizontal, Tr
 import { useState } from "react";
 import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
+import i18n from "@/lib/i18n";
 
 // Passed to useReactTable({ meta }) by the logs page so the expander column can
 // read/toggle chain expansion without threading props through column factories.
@@ -142,7 +143,7 @@ export function getRealtimeTurnMessages(log?: LogEntry): {
 
 export function getMessage(log?: LogEntry) {
 	if (log?.object === "list_models") {
-		return "N/A";
+		return i18n.t("labels.nA", { ns: "observability" });
 	}
 	if (log?.object === "realtime.turn") {
 		const messages = getRealtimeTurnMessages(log);
@@ -356,7 +357,7 @@ export const createColumns = (
 				const date = timestamp ? new Date(timestamp) : null;
 				const isValid = date && date.toString() !== "Invalid Date";
 				if (!isValid) {
-					return <div className="truncate text-xs">N/A</div>;
+					return <div className="truncate text-xs">{t("labels.nA")}</div>;
 				}
 				return (
 					<div className="flex flex-col leading-tight">
@@ -401,8 +402,8 @@ export const createColumns = (
 					<div className="flex min-w-0 items-center gap-2">
 						{provider ? <RenderProviderIcon provider={provider as ProviderIconType} size="xs" /> : null}
 						<div className="flex min-w-0 flex-col leading-tight">
-							<span className="truncate font-mono text-[12px]">{model || "N/A"}</span>
-							<span className="text-muted-foreground truncate text-[10.5px]">{provider ? getProviderLabel(provider) : "N/A"}</span>
+							<span className="truncate font-mono text-[12px]">{model || t("labels.nA")}</span>
+							<span className="text-muted-foreground truncate text-[10.5px]">{provider ? getProviderLabel(provider) : t("labels.nA")}</span>
 						</div>
 					</div>
 				);
@@ -437,7 +438,7 @@ export const createColumns = (
 			cell: ({ row }) => {
 				const latency = row.original.latency;
 				if (latency === undefined || latency === null) {
-					return <div className="pl-4 font-mono text-xs">N/A</div>;
+					return <div className="pl-4 font-mono text-xs">{t("labels.nA")}</div>;
 				}
 				const tone = latency >= 5000 ? "bg-red-500" : latency >= 2000 ? "bg-amber-500" : "bg-emerald-500";
 				const pct = Math.min(100, (latency / 5000) * 100);
@@ -463,7 +464,7 @@ export const createColumns = (
 			cell: ({ row }) => {
 				const tokenUsage = row.original.token_usage ?? batchAccountingDisplay(row.original)?.usage;
 				if (!tokenUsage) {
-					return <div className="pl-4 font-mono text-xs">N/A</div>;
+					return <div className="pl-4 font-mono text-xs">{t("labels.nA")}</div>;
 				}
 				const prompt = tokenUsage.prompt_tokens ?? 0;
 				const completion = tokenUsage.completion_tokens ?? 0;
@@ -515,7 +516,7 @@ export const createColumns = (
 							</Tooltip>
 						);
 					}
-					return <div className="pl-4 font-mono text-[12px]">N/A</div>;
+					return <div className="pl-4 font-mono text-[12px]">{t("labels.nA")}</div>;
 				}
 				return <div className="pl-4 font-mono text-sm tabular-nums">{formatCost(row.original.cost)}</div>;
 			},

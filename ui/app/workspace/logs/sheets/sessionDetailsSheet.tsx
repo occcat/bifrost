@@ -96,12 +96,12 @@ export function SessionDetailsSheet({
 			},
 			{
 				label: t("logs.session.started"),
-				value: sessionSummary?.started_at ? format(new Date(sessionSummary.started_at), "MMM d, yyyy hh:mm:ss aa") : "N/A",
+				value: sessionSummary?.started_at ? format(new Date(sessionSummary.started_at), "MMM d, yyyy hh:mm:ss aa") : t("labels.nA"),
 				size: "sm",
 			},
 			{
 				label: t("logs.session.latestUpdate"),
-				value: sessionSummary?.latest_at ? format(new Date(sessionSummary.latest_at), "MMM d, yyyy hh:mm:ss aa") : "N/A",
+				value: sessionSummary?.latest_at ? format(new Date(sessionSummary.latest_at), "MMM d, yyyy hh:mm:ss aa") : t("labels.nA"),
 				size: "sm",
 			},
 			{
@@ -296,7 +296,7 @@ export function SessionDetailsSheet({
 												{log.provider as ProviderName}
 											</Badge>
 										</TableCell>
-										<TableCell className="max-w-[140px] truncate font-mono text-xs">{log.model || "N/A"}</TableCell>
+										<TableCell className="max-w-[140px] truncate font-mono text-xs">{log.model || t("labels.nA")}</TableCell>
 									</TableRow>
 								))
 							) : (

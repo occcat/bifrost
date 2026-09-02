@@ -1493,7 +1493,7 @@ export function LogDetailView({
 								label={t("logs.detail.startTimestamp")}
 								value={(() => {
 									const d = log.timestamp ? new Date(log.timestamp) : null;
-									return d && !isNaN(d.getTime()) ? format(d, "yyyy-MM-dd hh:mm:ss aa") : "N/A";
+									return d && !isNaN(d.getTime()) ? format(d, "yyyy-MM-dd hh:mm:ss aa") : t("labels.nA");
 								})()}
 							/>
 							<LogEntryDetailsView
@@ -1501,26 +1501,26 @@ export function LogDetailView({
 								label={t("logs.detail.endTimestamp")}
 								value={(() => {
 									const d = log.timestamp ? new Date(log.timestamp) : null;
-									return d && !isNaN(d.getTime()) ? format(addMilliseconds(d, log.latency || 0), "yyyy-MM-dd hh:mm:ss aa") : "N/A";
+									return d && !isNaN(d.getTime()) ? format(addMilliseconds(d, log.latency || 0), "yyyy-MM-dd hh:mm:ss aa") : t("labels.nA");
 								})()}
 							/>
 							<LogEntryDetailsView
 								className="w-full"
 								label={t("labels.latency")}
 								tooltip={t("logs.detail.totalLatencyTooltip")}
-								value={log.latency == null || isNaN(log.latency) ? "N/A" : <div>{log.latency.toFixed(2)}ms</div>}
+								value={log.latency == null || isNaN(log.latency) ? t("labels.nA") : <div>{log.latency.toFixed(2)}ms</div>}
 							/>
 							<LogEntryDetailsView
 								className="w-full"
 								label={t("logs.detail.upstreamLatency")}
 								tooltip={t("logs.detail.upstreamLatencyTooltip")}
-								value={log.upstream_latency == null || isNaN(log.upstream_latency) ? "N/A" : <div>{log.upstream_latency.toFixed(2)}ms</div>}
+								value={log.upstream_latency == null || isNaN(log.upstream_latency) ? t("labels.nA") : <div>{log.upstream_latency.toFixed(2)}ms</div>}
 							/>
 							<LogEntryDetailsView
 								className="w-full"
 								label={t("logs.detail.bifrostOverhead")}
 								tooltip={t("logs.detail.bifrostOverheadTooltip")}
-								value={log.overhead_latency == null || isNaN(log.overhead_latency) ? "N/A" : <div>{log.overhead_latency.toFixed(2)}ms</div>}
+								value={log.overhead_latency == null || isNaN(log.overhead_latency) ? t("labels.nA") : <div>{log.overhead_latency.toFixed(2)}ms</div>}
 							/>
 						</div>
 						{log.overhead_breakdown && log.overhead_breakdown.length > 0 ? (

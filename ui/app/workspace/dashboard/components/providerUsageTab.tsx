@@ -14,7 +14,7 @@ import {
 	LATENCY_COLORS,
 	OTHER_SERIES_COLOR,
 	OTHER_SERIES_KEY,
-	OTHER_SERIES_LABEL,
+	getOtherSeriesLabel,
 	THROUGHPUT_COLOR,
 	formatTokensPerSecond,
 	getModelColor,
@@ -218,7 +218,7 @@ function ProviderUsageTabImpl({
 																className="h-2 w-2 shrink-0 rounded-full"
 																style={{ backgroundColor: provider === OTHER_SERIES_KEY ? OTHER_SERIES_COLOR : getModelColor(idx + 1) }}
 															/>
-															{provider === OTHER_SERIES_KEY ? OTHER_SERIES_LABEL : provider}
+															{provider === OTHER_SERIES_KEY ? getOtherSeriesLabel() : provider}
 														</span>
 													))}
 												</div>
@@ -306,7 +306,7 @@ function ProviderUsageTabImpl({
 																className="h-2 w-2 shrink-0 rounded-full"
 																style={{ backgroundColor: provider === OTHER_SERIES_KEY ? OTHER_SERIES_COLOR : getModelColor(idx + 1) }}
 															/>
-															{provider === OTHER_SERIES_KEY ? OTHER_SERIES_LABEL : provider}
+															{provider === OTHER_SERIES_KEY ? getOtherSeriesLabel() : provider}
 														</span>
 													))}
 												</div>

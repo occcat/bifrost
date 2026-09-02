@@ -101,7 +101,7 @@ export const createMCPColumns = (
 		cell: ({ row }) => {
 			const latency = row.original.latency;
 			return (
-				<div className="pl-4 font-mono text-sm">{latency === undefined || latency === null ? "N/A" : `${latency.toLocaleString()}ms`}</div>
+				<div className="pl-4 font-mono text-sm">{latency === undefined || latency === null ? t("labels.nA") : `${latency.toLocaleString()}ms`}</div>
 			);
 		},
 	},
@@ -112,7 +112,7 @@ export const createMCPColumns = (
 		cell: ({ row }) => {
 			const cost = row.original.cost;
 			const isValidNumber = typeof cost === "number" && Number.isFinite(cost);
-			return <div className="font-mono text-sm">{isValidNumber ? `${cost.toFixed(4)}` : "N/A"}</div>;
+			return <div className="font-mono text-sm">{isValidNumber ? `${cost.toFixed(4)}` : t("labels.nA")}</div>;
 		},
 	},
 	{
