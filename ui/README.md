@@ -54,6 +54,48 @@ BIFROST_PORT=8080
 - **Real-time**: WebSocket integration
 - **HTTP Client**: Axios with typed service layer
 - **Theme**: Dark/light mode support
+- **i18n**: i18next + react-i18next（en 默认，zh-CN）
+
+### Internationalization (i18n)
+
+客户端文案走 `i18next`。源语言 / 回退语言为 **en**，另支持 **zh-CN**。选择结果持久化到 `localStorage` key `bifrost.locale`。
+
+#### 目录约定
+
+| 路径 | 用途 |
+| --- | --- |
+| `lib/i18n/index.ts` | 初始化、导出 `i18n` / `SUPPORTED_LOCALES` / `changeLocale` / `getLocale` |
+| `lib/i18n/resources.ts` | 聚合各命名空间 JSON |
+| `locales/en/*.json` | 英文（源语言） |
+| `locales/zh-CN/*.json` | 简体中文 |
+
+命名空间：
+
+- 已有占位：`common`、`shell`、`login`
+- 预留空壳（后续 Worker 只填 JSON）：`observability`、`models`、`mcp`、`governance`、`config`
+
+#### 如何添加文案
+
+1. 在对应命名空间的 `locales/en/<ns>.json` 与 `locales/zh-CN/<ns>.json` 写入同一 key。
+2. 若是新命名空间：新建两侧 JSON，并在 `lib/i18n/resources.ts` 的 `NAMESPACES` / `resources` 中注册。
+3. 组件内：
+
+```tsx
+import { useTranslation } from "react-i18next";
+
+const { t } = useTranslation("common");
+return <button>{t("save")}</button>;
+
+// 其他命名空间
+const { t: tShell } = useTranslation("shell");
+```
+
+默认命名空间是 `common`。`I18nextProvider` 挂在 `app/clientLayout.tsx`，Router 子树均可使用 `useTranslation`。
+
+#### 如何切换语言
+
+- UI：顶栏 `LanguageSwitcher`（English / 简体中文）
+- 程序：`import { changeLocale, getLocale } from "@/lib/i18n"`，然后 `await changeLocale("zh-CN")`
 
 ### Integration Model
 
