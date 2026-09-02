@@ -35,6 +35,7 @@ import { type ChangeEvent, type ClipboardEvent, type DragEvent, type KeyboardEve
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 
 type TierBoundaryKey = keyof TierBoundaries;
 
@@ -242,6 +243,8 @@ function TierSpectrumBar({ boundaries }: { boundaries: TierBoundaries }) {
 }
 
 export default function ComplexityRouterPage() {
+	const { t } = useTranslation("models");
+	const { t: tc } = useTranslation("common");
 	const canUpdate = useRbac(RbacResource.RoutingRules, RbacOperation.Update);
 	const { data, isLoading, isFetching, error, refetch } = useGetComplexityAnalyzerConfigQuery();
 	const [updateConfig, { isLoading: isSaving }] = useUpdateComplexityAnalyzerConfigMutation();
@@ -284,7 +287,7 @@ export default function ComplexityRouterPage() {
 			.unwrap()
 			.then((defaults) => {
 				reset(defaults);
-				toast.success("Reset to defaults", { position: "top-right" });
+				toast.success(t("routing.resetToDefaults"), { position: "top-right" });
 			})
 			.catch((err) => {
 				setSubmitError(getErrorMessage(err));
@@ -298,7 +301,7 @@ export default function ComplexityRouterPage() {
 			.unwrap()
 			.then((res) => {
 				reset(res);
-				toast.success("Configuration saved", { position: "top-right" });
+				toast.success(t("routing.configSaved"), { position: "top-right" });
 			})
 			.catch((err) => {
 				setSubmitError(getErrorMessage(err));
@@ -323,7 +326,7 @@ export default function ComplexityRouterPage() {
 	if (!data) {
 		return (
 			<div className="mx-auto w-full max-w-7xl space-y-4 px-4 pt-6 sm:px-6 sm:pt-8 lg:px-14">
-				<p className="text-muted-foreground font-mono text-sm">No complexity router configuration is available.</p>
+				<p className="text-muted-foreground font-mono text-sm">{t("routing.noConfig")}</p>
 				<Button data-testid="complexity-router-fetch-retry-button" type="button" variant="outline" size="sm" onClick={() => refetch()}>
 					Retry
 				</Button>
@@ -346,15 +349,11 @@ export default function ComplexityRouterPage() {
 				>
 					{/* ── Page header ── */}
 					<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-end">
-						<PageTitle>
-							Tune how incoming requests are classified into four tiers. Thresholds and keyword lists feed the{" "}
-							<code className="bg-muted rounded-sm px-1 py-0.5 font-mono text-xs">complexity_tier</code> field that routing rules can
-							target.
-						</PageTitle>
+						<PageTitle>{t("routing.complexitySubtitle")}</PageTitle>
 						<Button asChild variant="outline" size="sm" className="w-full shrink-0 sm:w-fit" data-testid="complexity-router-docs-link">
 							<a href={"https://docs.getbifrost.ai/features/governance/complexity-router"} target="_blank" rel="noopener noreferrer">
 								<ExternalLink className="size-3.5" />
-								Docs
+								{t("routing.complexityDocs")}
 							</a>
 						</Button>
 					</div>
@@ -362,7 +361,7 @@ export default function ComplexityRouterPage() {
 					{/* ── Complexity Spectrum ── */}
 					<div className="bg-card space-y-4 rounded-sm border p-4 sm:p-5">
 						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-							<p className="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase">Complexity Spectrum</p>
+							<p className="text-muted-foreground font-mono text-xs font-semibold tracking-widest uppercase">{t("routing.complexitySpectrum")}</p>
 							<div className="grid grid-cols-2 gap-x-4 gap-y-2 min-[480px]:grid-cols-4 sm:flex sm:items-center">
 								{Object.values(TIER_PALETTE).map(({ color, name }) => (
 									<div key={name} className="flex items-center gap-1.5">
@@ -377,7 +376,7 @@ export default function ComplexityRouterPage() {
 
 					{/* ── Tier Boundaries ── */}
 					<div className="space-y-3">
-						<h2 className="text-sm font-semibold">Tier Boundaries</h2>
+						<h2 className="text-sm font-semibold">{t("routing.tierBoundaries")}</h2>
 
 						<div className="grid gap-3 md:grid-cols-3">
 							{BOUNDARY_FIELDS.map(({ key, label, description, fromTier, toTier, fromColor, toColor }) => {
@@ -464,7 +463,7 @@ export default function ComplexityRouterPage() {
 					{/* ── Keyword Lists ── */}
 					<div className="space-y-3">
 						<div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-2.5">
-							<h2 className="text-sm font-semibold">Keyword Lists</h2>
+							<h2 className="text-sm font-semibold">{t("routing.keywordLists")}</h2>
 							<span className="text-muted-foreground text-xs">
 								Lowercased and deduplicated on save. Each list requires at least one entry.
 							</span>
@@ -495,7 +494,7 @@ export default function ComplexityRouterPage() {
 														onValueChange={field.onChange}
 														collapsedTagLimit={KEYWORD_COLLAPSED_LIMIT}
 														expandButtonTestId={`complexity-router-keywords-${testIdPart(key)}-expand-button`}
-														placeholder="Type a keyword and press Enter"
+														placeholder={t("routing.keywordPlaceholder")}
 														aria-invalid={fieldError ? true : undefined}
 														aria-describedby={fieldError ? errorId : undefined}
 														className={cn(fieldError && "border-destructive")}
@@ -539,7 +538,7 @@ export default function ComplexityRouterPage() {
 						disabled={!canUpdate || isSaving || isResetting}
 					>
 						{isResetting ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" /> : <RotateCcw className="h-3.5 w-3.5" />}
-						Default
+						{t("routing.default")}
 					</Button>
 					<Button
 						data-testid="complexity-router-discard-changes-button"
@@ -550,7 +549,7 @@ export default function ComplexityRouterPage() {
 						onClick={handleDiscard}
 						disabled={!isDirty || isSaving || isResetting || isFetching}
 					>
-						Discard
+						{t("routing.discard")}
 					</Button>
 					<Button
 						data-testid="complexity-router-save-changes-button"
@@ -561,7 +560,7 @@ export default function ComplexityRouterPage() {
 						disabled={!canUpdate || !isDirty || isSaving || isResetting || (isSubmitted && hasErrors)}
 					>
 						{isSaving ? <LoaderCircle className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-						{isSaving ? "Saving…" : "Save"}
+						{isSaving ? t("routing.saving") : t("routing.save")}
 					</Button>
 				</div>
 			</div>
@@ -569,11 +568,8 @@ export default function ComplexityRouterPage() {
 			<AlertDialog open={restoreDialogOpen} onOpenChange={setRestoreDialogOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Restore defaults</AlertDialogTitle>
-						<AlertDialogDescription>
-							This will reset all tier boundaries and keyword lists to the factory defaults. Your current configuration will be lost. This
-							action cannot be undone.
-						</AlertDialogDescription>
+						<AlertDialogTitle>{t("routing.restoreDefaults")}</AlertDialogTitle>
+						<AlertDialogDescription>{t("routing.restoreDefaultsDesc")}</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel
@@ -581,7 +577,7 @@ export default function ComplexityRouterPage() {
 							onClick={() => setRestoreDialogOpen(false)}
 							disabled={isResetting}
 						>
-							Cancel
+							{tc("cancel")}
 						</AlertDialogCancel>
 						<AlertDialogAction
 							data-testid="complexity-router-restore-confirm-button"
@@ -591,7 +587,7 @@ export default function ComplexityRouterPage() {
 							}}
 							disabled={!canUpdate || isResetting}
 						>
-							Restore defaults
+							{t("routing.restoreDefaults")}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
